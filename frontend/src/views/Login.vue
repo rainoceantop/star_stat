@@ -1,8 +1,14 @@
 <template>
   <div class="inputs_wrapper">
     <h3>登录</h3>
-    <textInput label="用户名" type="text"></textInput>
-    <textInput label="密码" type="password"></textInput>
+    <div class="wrapper_form" >
+      <label class="form_label">用户名</label>
+      <input class="form_text" type="text" required />
+    </div>
+    <div class="wrapper_form" >
+      <label class="form_label">密码</label>
+      <input class="form_text" type="password" required />
+    </div>
     <button>登录</button>
     <div>
       <p>
@@ -14,22 +20,22 @@
 </template>
 
 <script>
-import textInput from "@/components/textInput.vue";
 export default {
   name: "login",
-  // data: function() {
-  //   return {
-  //     text:''
-  //   };
-  // },
+  data: function() {
+    return {
+      username: ''
+    };
+  },
   components: {
-    textInput
-  }
+    
+  },
+  
 };
 </script>
 
 <style lang="less" scoped>
-@primary_color: #42b983;
+@import '../assets/less/login.less';
 .inputs_wrapper {
   border-radius: 5px;
   margin: 15px auto;
