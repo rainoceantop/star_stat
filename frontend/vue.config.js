@@ -1,0 +1,11 @@
+module.exports={
+    css:{
+        loaderOptions:{
+            less:{
+                globalVars:{
+                    primary_color:'#42b983'
+                }
+            }
+        }
+    }
+}

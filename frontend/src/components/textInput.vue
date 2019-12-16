@@ -1,0 +1,144 @@
+<template>
+  <div class="wrapper_form" >
+    <label class="form_label">{{label}}</label>
+    <input class="form_text" :type="type" v-model="text" required  @keyup="keying" />
+  </div>
+</template>
+
+<script>
+export default {
+  name: "textInput",
+  props: {
+    label: String,
+    type: String
+  },
+  data() {
+    return {
+      text:'',
+      
+    };
+  },
+  methods:{
+    keying: ()=> {
+      console.log(this)
+      // if(this._data.text.length>0){
+      //   console.log("123");
+      // }else{
+      //   console.log("321")
+      // }
+      
+    }
+  },
+};
+</script>
+
+<style lang="less">
+.wrapper_form {
+  transform: 1s;
+  position: relative;
+  .form_label {
+    transform: 1s;
+    position: absolute;
+    line-height: 36px;
+    font-size: 18px;
+  }
+  .form_text {
+    transform: 1s;
+    border: rgba(44, 62, 80, 0.5);
+    width: 100%;
+    height: 36px;
+  }
+}
+.keying_form {
+  position: relative;
+  height: 48px;
+  .form_label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+  }
+  .form_text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+    width: 100%;
+    padding-top: 12px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0);
+    border: rgba(44, 62, 80, 0.8);
+  }
+}
+// .keying_form {
+//   padding:10px;
+//   height: 30px;
+//   transform: 1s;
+//   margin: 10px 0;
+//   position: relative;
+//   label {
+//     position: absolute;
+//     padding-left: 8px;
+//     text-align: left;
+//     font-size: 12px !important;
+//     color: rgba(0, 0, 0, 0.2);
+//     z-index: -1;
+//   }
+//   input {
+//     padding-left: 8px;
+//     background: rgba(0, 0, 0, 0);
+//     line-height: 30px;
+//     border: 1px solid rgba(0, 0, 0, 0.2);
+//     outline: none;
+
+//     font-size: 12px !important;
+//     -webkit-appearance: none;
+//     width: 100%;
+//   }
+//   button {
+//     width: 100%;
+//     background-color: @primary_color;
+//     border: 0;
+//     height: 30px;
+//     font-weight: bold;
+//     color: white;
+//     margin: 10px 0;
+//     border-radius: 4px;
+//   }
+// }
+// .wrapper_form {
+//   padding:10px;
+//   height: 30px;
+//   transform: 1s;
+//   margin: 10px 0;
+//   position: relative;
+//   label {
+//     position: absolute;
+//     padding-left: 8px;
+//     text-align: left;
+//     font-size: 18px;
+//     color: rgba(0, 0, 0, 0.2);
+//     z-index: -1;
+//   }
+//   input {
+//     padding-left: 8px;
+//     background: rgba(0, 0, 0, 0);
+//     line-height: 30px;
+//     border: 1px solid rgba(0, 0, 0, 0.2);
+//     outline: none;
+//     font-size: 18px;
+//     -webkit-appearance: none;
+//     width: 100%;
+//   }
+//   button {
+//     width: 100%;
+//     background-color: @primary_color;
+//     border: 0;
+//     height: 30px;
+//     font-weight: bold;
+//     color: white;
+//     margin: 10px 0;
+//     border-radius: 4px;
+//   }
+// }
+</style>
