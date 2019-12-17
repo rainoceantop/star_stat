@@ -1,16 +1,16 @@
 <template>
   <div class="inputs_wrapper">
     <h3>登录</h3>
-    <div :class="['wrapper_form',emailitem]">
+    <div :class="['wrapper_form',mailitem]">
       <label class="form_label">邮箱</label>
-      <input class="form_text" type="text" v-model="email" required />
+      <input class="form_text" type="text" v-model="mail" required />
     </div>
     <div :class="['wrapper_form',passworditem]">
       <label class="form_label">密码</label>
       <input class="form_text" type="password" v-model="password" required />
     </div>
     <div v-if="error" :class="['message']">
-      <p>账号或密码有误，请检查后重新输入</p>
+      <p>{{errorlabel}}</p>
     </div>
     <button type="submit" class="submit" @click="login">登录</button>
     <div :class="['input_link']">
@@ -30,16 +30,17 @@ export default {
   name: "login",
   data() {
     return {
-      email: "",
+      mail: "",
       password: "",
       e_reg: /^\w+@[a-zA-Z0-9]{2,10}(?:\.[a-z]{2,4}){1,3}$/,
-      p_reg: /^[a-zA-Z0-9,./~!@#$%^&*()_+]{8,40}$/,
-      error: false
+      p_reg: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/,
+      error: false,
+      errorlabel: ""
     };
   },
   computed: {
-    emailitem: function() {
-      return this.email.length === 0 ? "" : "keyup";
+    mailitem: function() {
+      return this.mail.length === 0 ? "" : "keyup";
     },
     passworditem: function() {
       return this.password.length === 0 ? "" : "keyup";
@@ -47,11 +48,15 @@ export default {
   },
   methods: {
     login: function() {
-      if (!(this.e_reg.test(this.email) && this.p_reg.test(this.password))) {
+      if (!this.e_reg.test(this.mail)) {
         this.error = true;
+        this.errorlabel = "请输入正确的邮箱";
+      } else if (!this.p_reg.test(this.password)) {
+        this.error = true;
+        this.errorlabel = "密码至少包含 数字和英文，长度6-20";
       } else {
         this.error = false;
-        console.log("上传成功");
+        console.log("符合条件发送成功");
       }
     }
   }

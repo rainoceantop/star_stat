@@ -20,7 +20,6 @@
     <div v-if="error" :class="['message']">
       <p>{{errorlabel}}</p>
     </div>
-
     <button type="submit" class="submit" @click="register">注册</button>
     <div :class="['input_link']">
       <p>
@@ -65,7 +64,7 @@ export default {
   },
   methods: {
     register: function() {
-      if (this.username.length < 6) {
+      if (this.username.length < 2) {
         this.error = true;
         this.errorlabel = "用户名字数必须大于2";
       } else if (!this.e_reg.test(this.mail)) {
@@ -79,6 +78,7 @@ export default {
         this.errorlabel = "两次输入的密码不一致";
       } else {
         this.error = false;
+        console.log("符合条件发送成功")
         // console.log("success");
         // console.log(!this.e_reg.test(this.mail));
         // console.log(!this.p_reg.test(this.password));

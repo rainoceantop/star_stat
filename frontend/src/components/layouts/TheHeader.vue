@@ -36,7 +36,7 @@ export default {
 <style lang='less'>
 .header {
   background-color: #42b983;
-  box-shadow: 0px 1px 1px @primary_color;
+  box-shadow: 0px 1px 1px rgba(0,0,0,0.4);
   .displaybox {
     display: flex;
     height: 48px;

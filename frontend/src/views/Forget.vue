@@ -8,7 +8,7 @@
     <div v-if="error" :class="['message']">
       <p>{{errorlabel}}</p>
     </div>
-    <button type="submit" class="submit" @click="register">发送验证到邮箱</button>
+    <button type="submit" class="submit" @click="email">发送验证到邮箱</button>
     <div :class="['input_link']">
       <p>
         <router-link to="/register">注册？</router-link>
@@ -38,16 +38,13 @@ export default {
     }
   },
   methods: {
-    register: function() {
+    email: function() {
       if (!this.e_reg.test(this.mail)) {
         this.error = true;
         this.errorlabel = "请输入正确的邮箱";
       } else {
         this.error = false;
-        // console.log("success");
-        // console.log(!this.e_reg.test(this.mail));
-        // console.log(!this.p_reg.test(this.password));
-        // console.log(this.password !== this.confirm)
+        console.log("符合条件发送成功")
       }
     }
   }
