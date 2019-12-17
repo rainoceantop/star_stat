@@ -78,7 +78,12 @@ export default {
         this.errorlabel = "两次输入的密码不一致";
       } else {
         this.error = false;
-        console.log("符合条件发送成功")
+        console.log("符合条件发送成功");
+        this.store.dispatch('register',{
+          mail:this.mail,
+          password:this.password,
+          username:this.username
+        })
         // console.log("success");
         // console.log(!this.e_reg.test(this.mail));
         // console.log(!this.p_reg.test(this.password));
