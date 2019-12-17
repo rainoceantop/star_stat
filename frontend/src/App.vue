@@ -1,21 +1,10 @@
 <template>
   <div id="app">
-    <header id="header">
-      <div class="wrapper header_wrapper">
-        <div class="logo">
-          <h3>
-            <router-link to="/" style="font-size:30px;">blog</router-link>
-          </h3>
-        </div>
-        <nav>
-          <router-link to="/login">
-            <font-awesome-icon :icon="user" style="width:24px;height:24px;" />
-          </router-link>
-        </nav>
-      </div>
-    </header>
-    <router-view />
-    <footer>&copy;2019</footer>
+    <TheHeader />
+    <main>
+      <router-view />
+    </main>
+    <TheFooter />
   </div>
 </template>
 
@@ -25,7 +14,7 @@
   padding: 0;
   box-sizing: border-box;
 }
-a{
+a {
   text-decoration: none;
   color: #2c3e50;
 }
@@ -37,44 +26,28 @@ a{
   color: #2c3e50;
   display: grid;
 }
-.wrapper {
+.primary_width, main{
   max-width: 1200px;
   margin: 0 auto;
 }
-.header_wrapper{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: inherit;
+main{
+  min-height: 660px;
+  padding-top:20px; 
+}
 
-}
-#header {
-  height: 50px;
-  background: @primary_color;
-  box-shadow: 0px 1px 1px rgba(0,0,0,0.2);
-}
-#nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: @primary_color;
-    }
-  }
-}
 </style>
 <script>
-import { faUser} from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-export default{
-  data(){
-    return{
-      user:faUser
-    }
+import TheHeader from "@/components/layouts/TheHeader.vue";
+import TheFooter from "@/components/layouts/TheFooter.vue";
+
+export default {
+  name: "App",
+  data() {
+    return {};
   },
-  components:{
-    FontAwesomeIcon
+  components: {
+    TheHeader,
+    TheFooter
   }
-}
+};
 </script>
