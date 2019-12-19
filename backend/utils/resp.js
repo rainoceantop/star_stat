@@ -1,7 +1,7 @@
-const resp = function(code, data) {
+const resp = function(code, info) {
     return {
         code,
-        data
+        info
     }
 }
 
