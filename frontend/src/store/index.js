@@ -13,8 +13,8 @@ export default new Vuex.Store({
     login(state, user) {
       state.user = user
     },
-    createArticle(state, article) {
-      console.log('123')
+    creataArticle(state, article) {
+      console.log('commit success')
       state.article = article
     }
   },
@@ -29,10 +29,13 @@ export default new Vuex.Store({
     },
     // articles
     createArticle(context, params) {
-      console.log(context, params, 'createarticle')
-      return
+
+      return axios.post('http://192.168.0.112:3000/article/create', params)
       // return axios.post('',parmas)
-    }
+    },
+    // showAreticle(context,params){
+
+    // }
   },
   modules: {
   }

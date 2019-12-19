@@ -56,13 +56,13 @@ export default {
         this.errorlabel = "密码至少包含 数字和英文，长度6-20";
       } else {
         this.error = false;
-        console.log("符合条件发送成功");
         this.$store
           .dispatch("login", {
             email: this.email,
             password: this.password
           })
           .then(res => {
+            console.log(res);
             if (res.data.code === 1) {
               this.$store.commit("login", res.data.info);
               console.log(res);

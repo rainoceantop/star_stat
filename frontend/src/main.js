@@ -9,12 +9,15 @@ import axios from 'axios'
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 // library.add(faUserSecret,faUser)
- 
+
 // Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.config.productionTip = false
+axios.defaults.withCredentials = true;
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 Vue.prototype.$axios = axios
+
+
 // Vue.prototype.store = store
 
 new Vue({

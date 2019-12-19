@@ -35,14 +35,22 @@ const routes = [
   }
   ,
   {
-    path: '/articles/show',
+    path: '/articles/show/:Id',
     name: 'show',
+    // beforeEnter: (to, from, next) => {
+    //   console.log(store.state.article)
+    //   if (!store.state.article) {
+    //     next()
+    //   } else {
+    //     next('/')
+    //   }
+    // },
     component: () => import('../views/articles/show.vue')
   }
   ,
   {
     path: '/articles/list',
-    name: 'show',
+    name: 'list',
     component: () => import('../views/articles/list.vue')
   }
 ]

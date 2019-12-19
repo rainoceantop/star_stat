@@ -78,7 +78,6 @@ export default {
         this.errorlabel = "两次输入的密码不一致";
       } else {
         this.error = false;
-
         this.$store
           .dispatch("register", {
             email: this.email,
@@ -88,7 +87,7 @@ export default {
           .then(res => {
             if (res.data.code === 1) {
               this.$store.commit("login", res.data.info);
-              console.log("符合条件发送成功");
+              console.log(res);
               this.$router.push("/");
             } else {
               this.error = true;

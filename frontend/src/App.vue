@@ -48,6 +48,9 @@ export default {
   data() {
     return {};
   },
+  created() {
+    this.$axios.get("http://192.168.0.112:3000").then(res => console.log(res));
+  },
   components: {
     TheHeader,
     TheFooter

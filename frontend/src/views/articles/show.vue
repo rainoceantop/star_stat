@@ -30,8 +30,8 @@ export default {
     return {
       edit: faEdit,
       trash: faTrash,
-      title: "Lorem ipsum dolor sit amet consectetur.",
-      content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
+      title: this.$store.state.article[0].title,
+      content: this.$store.state.article[0].content,
       message: ""
     };
   },
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     editarticle: function() {
-      console.log("edit");
+      console.log();
     },
     deletearticle: function() {
       console.log("delete");

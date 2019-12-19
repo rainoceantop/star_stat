@@ -48,17 +48,18 @@ export default {
             content: this.content
           })
           .then(res => {
-            if (res == res) {
-              this.$store.commit("creataArticle", {
-                title: this.title,
-                content: this.content
+            if (res.data.code === 1) {
+              this.$store.commit("creataArticle", res.data.info);
+              const Id = res.data.info[0]._id;
+              this.$router.push({
+                name: "show",
+                params: { Id }
               });
-              console.log(res);
-              console.log("提交给store存储");
-              this.$router.push("/articles/show");
+            } else {
+              console.log(res.data);
+              alert("服务器繁忙");
             }
           });
-        console.log("123");
       }
     }
   }
