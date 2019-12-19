@@ -1,13 +1,15 @@
 <template>
-  <footer>&copy;2019</footer>
+  <footer class="footer">&copy;2019</footer>
 </template>
 
 <script>
 export default {
-  name: "TheFooter",
-  
+  name: "TheFooter"
 };
 </script>
 
 <style>
+.footer {
+  height: 48px;
+}
 </style>
