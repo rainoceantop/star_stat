@@ -17,7 +17,6 @@ class User {
                 email: email,
                 password: crypto.createHash('sha1').update(password).digest('hex')
             })
-            console.log(result.ops)
             req.session.user = result.ops[0]
             return res.json(resp(code.REQUEST_SUCCESS, result.ops[0]))
         } catch (error) {

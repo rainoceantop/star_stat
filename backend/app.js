@@ -1,7 +1,6 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
-const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const logger = require('morgan')
 const indexRouter = require('./routes/index')
@@ -17,18 +16,21 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 app.use(logger('dev'))
 app.use(cors({
-  origin: ['http://192.168.0.107:8080'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
+  origin: ['http://192.168.0.107:8080', 'http://192.168.0.112:8080'],
+  credentials: true,
 }))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
 app.use(session({
   name: 'session_id',
   secret: 'this is lgs first blog backend',
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: {
+    path: '/',
+    sameSite: 'none',
+    maxAge: 60000
+  }
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 

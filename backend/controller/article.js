@@ -11,7 +11,6 @@ class Article {
                 author: req.session.user._id,
                 title, content
             })
-            console.log(result.ops)
             return res.json(resp(code.REQUEST_SUCCESS, result.ops))
         } catch (error) {
             return res.json(resp(code.REQUEST_FAIL, null))
