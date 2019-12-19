@@ -4,7 +4,7 @@ const UserController = require('../controller/user')
 const UserMiddleware = require('../middleware/user')
 
 /* GET users listing. */
-router.get('/register', UserMiddleware.register, UserController.register)
-router.get('/login', UserMiddleware.login, UserController.login)
+router.post('/register', UserMiddleware.register, UserController.register)
+router.post('/login', UserMiddleware.login, UserController.login)
 
 module.exports = router

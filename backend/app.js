@@ -1,11 +1,11 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
-const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const logger = require('morgan')
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
+const articleRouter = require('./routes/article')
 const cors = require('cors')
 const app = express()
 require('./libs/mongo') // 启动mongo
@@ -15,19 +15,28 @@ app.disable('etag')
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 app.use(logger('dev'))
-app.use(cors())
+app.use(cors({
+  origin: ['http://192.168.0.107:8080', 'http://192.168.0.112:8080'],
+  credentials: true,
+}))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
 app.use(session({
+  name: 'session_id',
   secret: 'this is lgs first blog backend',
   resave: true,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    path: '/',
+    sameSite: 'none',
+    maxAge: 60000
+  }
 }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use('/', indexRouter)
 app.use('/user', userRouter)
+app.use('/article', articleRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
