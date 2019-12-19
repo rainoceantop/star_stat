@@ -15,6 +15,7 @@ app.disable('etag')
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'jade')
 app.use(logger('dev'))
+
 app.use(cors({
   origin: ['http://192.168.0.107:8080', 'http://192.168.0.112:8080'],
   credentials: true,
@@ -28,8 +29,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     path: '/',
+    secure: false,
     sameSite: 'none',
-    maxAge: 60000
+    maxAge: 24 * 60 * 60 * 1000
   }
 }))
 app.use(express.static(path.join(__dirname, 'public')))
