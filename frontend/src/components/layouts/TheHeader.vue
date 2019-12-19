@@ -7,16 +7,25 @@
         </h3>
       </div>
       <nav class="nav">
+        <router-link to="/articles/create">
+          <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
+        </router-link>
+        <router-link to="/articles/list">
+          <font-awesome-icon :icon="blog" style="width:24px;height:24px;" />
+        </router-link>
         <router-link to="/login">
           <font-awesome-icon :icon="user" style="width:24px;height:24px;" />
         </router-link>
       </nav>
     </div>
   </header>
-</template>
+</template><script>
+import {
+  faUser,
+  faBook,
+  faBookMedical
+} from "@fortawesome/free-solid-svg-icons";
 
-<script>
-import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 export default {
@@ -24,29 +33,39 @@ export default {
   data() {
     return {
       logo: "blog",
-      user: faUser
+      user: faUser,
+      blog: faBook,
+      createblog: faBookMedical
     };
   },
+
   components: {
     FontAwesomeIcon
   }
 };
-</script>
-
-<style lang='less'>
+</script><style lang='less'>
 .header {
   background-color: #42b983;
-  box-shadow: 0px 1px 1px rgba(0,0,0,0.4);
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.4);
+
   .displaybox {
     display: flex;
     height: 48px;
     padding: 0 12px;
-    justify-content:space-between;
+    justify-content: space-between;
     align-items: center;
-    .logo{
+
+    .logo {
       font-size: 30px;
     }
-    
+
+    .nav {
+      display: flex;
+
+      a {
+        margin-left: 16px;
+      }
+    }
   }
 }
 </style>

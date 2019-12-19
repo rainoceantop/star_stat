@@ -3,7 +3,7 @@
     <h3>注册</h3>
     <div :class="['wrapper_form',mailitem]">
       <label class="form_label">邮箱</label>
-      <input class="form_text" type="mail" v-model="mail" required />
+      <input class="form_text" type="email" v-model="email" required />
     </div>
     <div :class="['wrapper_form',usernameitem]">
       <label class="form_label">用户名</label>
@@ -38,7 +38,7 @@ export default {
   name: "register",
   data() {
     return {
-      mail: "",
+      email: "",
       username: "",
       password: "",
       confirm: "",
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     mailitem: function() {
-      return this.mail.length === 0 ? "" : "keyup";
+      return this.email.length === 0 ? "" : "keyup";
     },
     usernameitem: function() {
       return this.username.length === 0 ? "" : "keyup";
@@ -67,7 +67,7 @@ export default {
       if (this.username.length < 2) {
         this.error = true;
         this.errorlabel = "用户名字数必须大于2";
-      } else if (!this.e_reg.test(this.mail)) {
+      } else if (!this.e_reg.test(this.email)) {
         this.error = true;
         this.errorlabel = "请输入正确的邮箱";
       } else if (!this.p_reg.test(this.password)) {
@@ -78,16 +78,25 @@ export default {
         this.errorlabel = "两次输入的密码不一致";
       } else {
         this.error = false;
-        console.log("符合条件发送成功");
-        this.store.dispatch('register',{
-          mail:this.mail,
-          password:this.password,
-          username:this.username
-        })
-        // console.log("success");
-        // console.log(!this.e_reg.test(this.mail));
-        // console.log(!this.p_reg.test(this.password));
-        // console.log(this.password !== this.confirm)
+
+        this.$store
+          .dispatch("register", {
+            email: this.email,
+            password: this.password,
+            username: this.username
+          })
+          .then(res => {
+            if (res.data.code === 1) {
+              this.$store.commit("login", res.data.info);
+              console.log("符合条件发送成功");
+              this.$router.push("/");
+            } else {
+              this.error = true;
+              this.errorlabel = "该邮箱已注册";
+              console.log();
+            }
+          })
+          .catch(err => console.error(err));
       }
     }
   }

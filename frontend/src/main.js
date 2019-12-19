@@ -15,7 +15,7 @@ Vue.config.productionTip = false
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 Vue.prototype.$axios = axios
-Vue.prototype.store = store
+// Vue.prototype.store = store
 
 new Vue({
   router,

@@ -26,15 +26,18 @@ a {
   color: #2c3e50;
   display: grid;
 }
-.primary_width, main{
+.primary_width,
+main {
   max-width: 1200px;
   margin: 0 auto;
 }
-main{
-  min-height: 660px;
-  padding-top:20px; 
+main {
+  min-height: calc(100vh - 96px);
+  padding: 20px;
 }
-
+input {
+  outline: medium;
+}
 </style>
 <script>
 import TheHeader from "@/components/layouts/TheHeader.vue";
