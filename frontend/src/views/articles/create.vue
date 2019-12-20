@@ -48,6 +48,7 @@ export default {
             content: this.content
           })
           .then(res => {
+            console.log(res);
             if (res.data.code === 1) {
               this.$store.commit("creataArticle", res.data.info);
               const Id = res.data.info[0]._id;
