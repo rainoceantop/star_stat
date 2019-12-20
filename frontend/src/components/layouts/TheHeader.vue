@@ -35,7 +35,8 @@ export default {
       logo: "blog",
       user: faUser,
       blog: faBook,
-      createblog: faBookMedical
+      createblog: faBookMedical,
+      islogin: false
     };
   },
 

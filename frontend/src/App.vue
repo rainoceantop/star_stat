@@ -2,7 +2,9 @@
   <div id="app">
     <TheHeader />
     <main>
-      <router-view />
+      <keep-alive>
+        <router-view />
+      </keep-alive>
     </main>
     <TheFooter />
   </div>
@@ -49,7 +51,9 @@ export default {
     return {};
   },
   created() {
-    this.$axios.get("http://192.168.0.112:3000").then(res => console.log(res));
+    // 判断后台是否记录用户信息
+    this.$store.dispatch("isLogin");
+    console.log("qwe");
   },
   components: {
     TheHeader,

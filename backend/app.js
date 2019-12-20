@@ -17,7 +17,7 @@ app.set('view engine', 'jade')
 app.use(logger('dev'))
 
 app.use(cors({
-  origin: ['http://192.168.0.107:8080', 'http://192.168.0.112:8080'],
+  origin: ['http://192.168.0.107:8080', 'http://192.168.0.112:8080', 'http://192.168.1.101:8080', 'http://localhost:8080'],
   credentials: true,
 }))
 app.use(express.json())
@@ -41,12 +41,12 @@ app.use('/user', userRouter)
 app.use('/article', articleRouter)
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404))
 })
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}

@@ -2,8 +2,8 @@
   <div class="article">
     <div class="article_show">
       <div class="title">
-        <h4>{{title}}</h4>
-        <div class="edit_delete">
+        <h4>{{article.title}}</h4>
+        <div class="edit_delete" v-if="isloginright">
           <a @click="editarticle">
             <font-awesome-icon :icon="edit" style="width:24px;height:24px;" />
           </a>
@@ -12,12 +12,12 @@
           </a>
         </div>
       </div>
-      <div class="content">{{content}}</div>
+      <div class="content">{{article.content}}</div>
     </div>
-    <div class="message">
+    <!-- <div class="message">
       <label>评论</label>
       <input type="text" v-model="message" />
-    </div>
+    </div>-->
   </div>
 </template>
 
@@ -30,20 +30,43 @@ export default {
     return {
       edit: faEdit,
       trash: faTrash,
-      title: this.$store.state.article[0].title,
-      content: this.$store.state.article[0].content,
-      message: ""
+      article: {},
+      isloginright: false
     };
   },
+  props: ["aid"],
   components: {
     FontAwesomeIcon
   },
+  created() {
+    console.log("222222222222222");
+    this.openArticles(this.aid);
+  },
+
   methods: {
+    openArticles: function(aid) {
+      this.$axios
+        .get("http://192.168.0.112:3000/article/getArticle/" + aid)
+        .then(res => {
+          console.log(res);
+          this.article = res.data.info;
+          if (res.data.info.author === this.$store.state.user._id) {
+            this.isloginright = true;
+          } else {
+            this.isloginright = false;
+          }
+        });
+    },
     editarticle: function() {
       console.log();
     },
     deletearticle: function() {
       console.log("delete");
+    }
+  },
+  watch: {
+    aid: function(n) {
+      this.openArticles(n);
     }
   }
 };
