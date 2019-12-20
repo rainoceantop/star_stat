@@ -1,10 +1,16 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '../store/index'
+import home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: home
+  },
   {
     path: '/login',
     name: 'login',
@@ -35,7 +41,14 @@ const routes = [
   }
   ,
   {
-    path: '/articles/show/:Id',
+    path: '/articles/list',
+    name: 'list',
+
+    component: () => import('../views/articles/list.vue'),
+  }
+  ,
+  {
+    path: '/articles/:aid',
     name: 'show',
     // beforeEnter: (to, from, next) => {
     //   console.log(store.state.article)
@@ -45,13 +58,8 @@ const routes = [
     //     next('/')
     //   }
     // },
-    component: () => import('../views/articles/show.vue')
-  }
-  ,
-  {
-    path: '/articles/list',
-    name: 'list',
-    component: () => import('../views/articles/list.vue')
+    component: () => import('../views/articles/show.vue'),
+    props: true
   }
 ]
 

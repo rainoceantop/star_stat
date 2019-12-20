@@ -2,29 +2,11 @@
   <div class="article">
     <div class="article_list">
       <ul>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
-        </li>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
-        </li>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
-        </li>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
-        </li>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
-        </li>
-        <li>
-          <h4>777777777</h4>
-          <div>7733333333777</div>
+        <li v-for="item of articles" :key="item._id">
+          <router-link :to="{name:'show',params:{aid: item._id}}">
+            <h4>{{item.title}}</h4>
+            <div>{{item.content}}</div>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -36,14 +18,22 @@ export default {
   name: "list",
   data() {
     return {
-      articles: [
-        { title: "55555555555555", content: "88888888888888888888" },
-        { title: "55555555555555", content: "88888888888888888888" },
-        { title: "55555555555555", content: "88888888888888888888" }
-      ]
+      articles: []
     };
   },
-  methods: {}
+  created() {
+    this.getSelfArticles();
+  },
+  methods: {
+    getSelfArticles() {
+      this.$axios
+        .post("http://192.168.0.112:3000/article/getSelfArticles")
+        .then(res => {
+          this.articles = res.data.info;
+          console.log(res);
+        });
+    }
+  }
 };
 </script>
 

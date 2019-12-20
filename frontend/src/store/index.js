@@ -12,10 +12,14 @@ export default new Vuex.Store({
   mutations: {
     login(state, user) {
       state.user = user
+      console.log(user);
     },
     creataArticle(state, article) {
       console.log('commit success')
       state.article = article
+    },
+    getSelfArticles(state, articles) {
+      state.articles = articles
     }
   },
   actions: {
@@ -33,6 +37,14 @@ export default new Vuex.Store({
       return axios.post('http://192.168.0.112:3000/article/create', params)
       // return axios.post('',parmas)
     },
+    isLogin(context) {
+      axios.post('http://192.168.0.112:3000/user/isLogin').then(res => {
+        if (res.data.code === 1) {
+          context.commit("login", res.data.info);
+        }
+      })
+    },
+
     // showAreticle(context,params){
 
     // }

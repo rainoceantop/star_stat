@@ -51,10 +51,11 @@ export default {
             console.log(res);
             if (res.data.code === 1) {
               this.$store.commit("creataArticle", res.data.info);
-              const Id = res.data.info[0]._id;
+              const id = res.data.info[0]._id;
+
               this.$router.push({
                 name: "show",
-                params: { Id }
+                params: { aid: id }
               });
             } else {
               console.log(res.data);
