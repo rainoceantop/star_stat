@@ -44,6 +44,11 @@ class User {
             return res.json(resp(code.REQUEST_FAIL, null))
         }
     }
+    static isLogin(req, res) {
+        const user = req.session.user
+        if(user) return res.json(resp(code.REQUEST_SUCCESS, user))
+        return res.json(resp(code.REQUEST_FAIL, null))
+    }
 }
 
 module.exports = User

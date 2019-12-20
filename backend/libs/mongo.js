@@ -44,6 +44,15 @@ class Mongo{
             }
         })
     }
+    find(collection, filter) {
+        return new Promise((resolve, reject) => {
+            this.db.collection(collection).find(filter).toArray((err, res) => {
+                assert.equal(null, err)
+                console.log(res)
+                resolve(res)
+            })
+        })
+    }
 }
 
 module.exports = new Mongo()
