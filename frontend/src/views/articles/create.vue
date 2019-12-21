@@ -32,37 +32,88 @@ export default {
       errorlable: ""
     };
   },
-  //   components: {
-  //     VueSimplemde
-  //   },
+  props: ["aid", "iscreate"],
+  created() {
+    // this.hasArticle();
+    this.initData();
+  },
   methods: {
+    initData() {
+      this.error = false;
+      this.errorlable = "";
+      if (this.iscreate) {
+        this.title = "";
+        this.content = "";
+      } else {
+        const article = this.$store.state.articles.filter(
+          item => item._id === this.aid
+        )[0];
+        if (article) {
+          this.title = article.title;
+          this.content = article.content;
+        }
+      }
+    },
     createArticle: function() {
       if (this.title.length < 2 || this.content.length < 10) {
         this.error = true;
         this.errorlable = "标题必须文字必须大于2，文章内容必须大于10";
       } else {
-        this.error = false;
-        this.$store
-          .dispatch("createArticle", {
-            title: this.title,
-            content: this.content
-          })
-          .then(res => {
-            console.log(res);
-            if (res.data.code === 1) {
-              this.$store.commit("creataArticle", res.data.info);
-              const id = res.data.info[0]._id;
-
-              this.$router.push({
-                name: "show",
-                params: { aid: id }
-              });
-            } else {
-              console.log(res.data);
-              alert("服务器繁忙");
-            }
-          });
+        if (this.aid == null) {
+          this.error = false;
+          this.$store
+            .dispatch("createArticle", {
+              title: this.title,
+              content: this.content
+            })
+            .then(res => {
+              console.log(res);
+              if (res.data.code === 1) {
+                this.$store.commit("creataArticle", res.data.info);
+                const id = res.data.info[0]._id;
+                this.$store.state.articles.unshift(res.data.info[0]);
+                this.$router.push({
+                  name: "show",
+                  params: { aid: id, fresh: false }
+                });
+              } else {
+                alert("服务器繁忙");
+              }
+            });
+        } else {
+          this.$store
+            .dispatch("updateArticle", {
+              aid: this.aid,
+              title: this.title,
+              content: this.content,
+              author: this.$store.state.article.author
+            })
+            .then(res => {
+              console.log(res);
+              if (res.data.code === 1) {
+                console.log(this.$store.state.article);
+                this.$store.commit("creataArticle", {
+                  aid: this.aid,
+                  title: this.title,
+                  content: this.content,
+                  author: this.$store.state.article.author
+                });
+                console.log(this.aid);
+                this.$router.push({
+                  // path: `/show/${this.aid}`,
+                  // query: { fresh: true }
+                  name: "show",
+                  params: { aid: this.aid, fresh: true }
+                });
+              }
+            });
+        }
       }
+    }
+  },
+  watch: {
+    aid: function() {
+      this.initData();
     }
   }
 };

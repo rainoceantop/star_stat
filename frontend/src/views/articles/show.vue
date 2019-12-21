@@ -2,7 +2,7 @@
   <div class="article">
     <div class="article_show">
       <div class="title">
-        <h4>{{article.title}}</h4>
+        <h4 v-bind:value="article.title">{{article.title}}</h4>
         <div class="edit_delete" v-if="isloginright">
           <a @click="editarticle">
             <font-awesome-icon :icon="edit" style="width:24px;height:24px;" />
@@ -34,39 +34,72 @@ export default {
       isloginright: false
     };
   },
-  props: ["aid"],
+  props: ["aid", "fresh"],
   components: {
     FontAwesomeIcon
   },
   created() {
-    console.log("222222222222222");
-    this.openArticles(this.aid);
+    this.initData();
   },
 
   methods: {
+    initData() {
+      if (this.article != this.$store.article) {
+        this.article = this.$store.article;
+      } else {
+        this.article = {};
+      }
+    },
     openArticles: function(aid) {
       this.$axios
-        .get("http://192.168.0.112:3000/article/getArticle/" + aid)
+        .get("http://192.168.0.113:3001/article/getArticle/" + aid)
         .then(res => {
-          console.log(res);
           this.article = res.data.info;
           if (res.data.info.author === this.$store.state.user._id) {
             this.isloginright = true;
           } else {
             this.isloginright = false;
           }
+          this.$store.commit("creataArticle", res.data.info);
         });
     },
     editarticle: function() {
-      console.log();
+      this.$router.push({
+        name: "create",
+        params: { aid: this.aid, iscreate: false }
+      });
     },
-    deletearticle: function() {
-      console.log("delete");
+    deletearticle: function(isloginright) {
+      if (!isloginright) return;
+      this.$axios
+        .post("http://192.168.0.113:3001/article/delete", {
+          aid: this.aid,
+          author: this.$store.state.user._id
+        })
+        .then(res => {
+          console.log(res);
+          const { code } = res.data;
+          if (code === 1) {
+            this.$store.commit("removeArticle", this.aid);
+          }
+          this.$router.push({ name: "list" });
+        });
+    },
+    iffresh: function() {
+      if (this.fresh) {
+        this.openArticles();
+      }
     }
+  },
+  activated() {
+    this.openArticles(this.aid);
   },
   watch: {
     aid: function(n) {
       this.openArticles(n);
+    },
+    fresh: function() {
+      this.iffresh();
     }
   }
 };

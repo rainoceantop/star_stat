@@ -21,17 +21,23 @@ export default {
       articles: []
     };
   },
-  created() {
+  created() {},
+  activated() {
     this.getSelfArticles();
   },
   methods: {
     getSelfArticles() {
-      this.$axios
-        .post("http://192.168.0.112:3000/article/getSelfArticles")
-        .then(res => {
-          this.articles = res.data.info;
-          console.log(res);
-        });
+      if (this.$store.state.articles.length === 0) {
+        this.$axios
+          .post("http://192.168.0.113:3001/article/getSelfArticles")
+          .then(res => {
+            this.articles = res.data.info;
+            console.log("调取后台list");
+            this.$store.commit("getSelfArticles", res.data.info);
+          });
+      } else {
+        this.data.articles = this.$store.state.articles;
+      }
     }
   }
 };
