@@ -44,7 +44,6 @@ export default {
   },
   created() {
     console.log("created" + "show");
-    this.initData();
   },
   beforeMount() {
     console.log("beforeMount" + "show");
@@ -63,7 +62,9 @@ export default {
   },
   activated() {
     console.log("Activated" + "show");
-    this.changeDate();
+    // this.changeDate();
+    this.initData();
+    this.isAuthor();
   },
   beforeDestory() {
     console.log("beforeDestory" + "show");
@@ -73,20 +74,27 @@ export default {
   },
   methods: {
     initData() {
-      if (this.$store.state.article._id == "") {
-        this.$store.dispatch("show")
-        console.log("不需改变");
+      // this.$store.dispatch("getArticle", this.aid).then(res => {
+      //   this.article = res.data.info;
+      //   this.$store.commit("getArticle", res.data.info);
+      // });
+    },
+    isAuthor() {
+      if (this.$store.state.user._id == this.article.author) {
+        this.isauthor = true;
       } else {
-        console.log("需要改变");
-        this.article = this.$store.state.article;
+        this.isauthor = false;
       }
     },
     changeDate() {
       if (this.$store.state.article == this.article) {
-
         console.log("不需改变");
       } else {
         console.log("需要改变");
+        let filtered = this.$store.state.articles.filter(item => {
+          return item._id == this.aid;
+        });
+        console.log(filtered);
         this.article = this.$store.state.article;
       }
     }

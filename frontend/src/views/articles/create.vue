@@ -72,6 +72,8 @@ export default {
         this.errorlable = "标题必须文字必须大于2，文章内容必须大于10";
       } else {
         if (this.$route.name === "create") {
+          this.title = "";
+          this.content = "";
           console.log(this.$route.name);
           this.$store
             .dispatch("createArticle", {
@@ -80,10 +82,10 @@ export default {
             })
             .then(res => {
               this.$store.commit("createArticle", res.data.info[0]);
-              const id=res.data.info[0]._id
-              this.$router.push({name:'show',params:{aid:id}})
+              const id = res.data.info[0]._id;
+              this.$router.push({ name: "show", params: { aid: id } });
             });
-        } else {
+        } else if (this.$route.name === "update") {
           console.log(this.$route.name);
         }
       }

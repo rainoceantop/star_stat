@@ -49,9 +49,10 @@ const routes = [
   }
   ,
   {
-    path: '/articles/list',
+    path: '/articles/list/:author',
     name: 'list',
     component: () => import('../views/articles/list.vue'),
+    props: true
   }
   ,
   {

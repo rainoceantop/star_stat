@@ -19,6 +19,9 @@ export default new Vuex.Store({
       state.article = article
       state.articles.unshift(article)
     },
+    getArticle(state, article) {
+      state.article = article
+    },
     getSelfArticles(state, articles) {
       state.articles = articles
     },
@@ -52,18 +55,18 @@ export default new Vuex.Store({
       return axios.post('http://192.168.1.100:3001/user/register', params)
       // context.commit('register',res,err)
     },
+    getArticle(context, params) {
+      return axios.post('http://192.168.1.100:3001/article/getArticle/' + params)
+    },
     login(context, params) {
       return axios.post('http://192.168.1.100:3001/user/login', params)
     },
-    getSelfArticles(context) {
+    getSelfArticles(context, params) {
       console.log(context)
-      return axios.post('http://192.168.1.100:3001/article/getSelfArticles')
+      return axios.post('http://192.168.1.100:3001/article/getSelfArticles', params)
     },
-    // // articles
-    // createArticle(context, params) {
-    //   return axios.post('http://192.168.1.100:3001/article/create', params)
-    //   // return axios.post('',parmas)
-    // },
+    // articles
+
     isLogin(context) {
       axios.post('http://192.168.1.100:3001/user/isLogin').then(res => {
         if (res.data.code === 1) {
