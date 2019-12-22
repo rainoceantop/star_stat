@@ -2,7 +2,7 @@ class ArticleMiddleware{
     static create(req, res, next) {
         next()
     }
-    static getSelfArticles(req, res, next) {
+    static getArticles(req, res, next) {
         next()
     }
     static getArticle(req, res, next) {
