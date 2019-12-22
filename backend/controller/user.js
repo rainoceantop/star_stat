@@ -36,10 +36,7 @@ class User {
             if(password_sha1 !== user.password) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
             // 密码正确
             req.session.user = user
-            return res.json(resp(code.REQUEST_SUCCESS, {
-                email: user.email,
-                username: user.username
-            }))
+            return res.json(resp(code.REQUEST_SUCCESS, user))
         } catch (error) {
             return res.json(resp(code.REQUEST_FAIL, '登录失败，后台错误'))
         }

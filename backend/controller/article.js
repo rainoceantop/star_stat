@@ -59,11 +59,11 @@ class Article {
             return res.json(resp(code.REQUEST_FAIL, '查询失败，后台错误'))
         }
     }
-    static async getSelfArticles(req, res) {
+    static async getArticles(req, res) {
         try {
-            const user = req.session.user
-            if (!user) return res.json(resp(code.REQUEST_FAIL, '列表获取失败，尚未登陆'))
-            let result = await mongo.find('article', { author: user._id })
+            const uid = req.params.uid
+            if (!uid) return res.json(resp(code.REQUEST_FAIL, '列表获取失败'))
+            let result = await mongo.find('article', { author: uid })
             console.log(result)
             return res.json(resp(code.REQUEST_SUCCESS, result))
         } catch (error) {
