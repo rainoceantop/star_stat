@@ -62,6 +62,37 @@ export default {
       return this.confirm.length === 0 ? "" : "keyup";
     }
   },
+  beforeCreate() {
+    console.log("beforeCreate" + "register");
+  },
+  created() {
+    console.log("created" + "register");
+  },
+  beforeMount() {
+    console.log("beforeMount" + "register");
+  },
+  mounted() {
+    console.log("mounted" + "register");
+  },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate"+"register");
+  // },
+  // updated() {
+  //   console.log("updated"+"register");
+  // },
+  beforeActivated() {
+    console.log("beforeActivated" + "register");
+  },
+  activated() {
+    console.log("beforeActivated" + "register");
+  },
+
+  beforeDestory() {
+    console.log("beforeDestory" + "register");
+  },
+  destoryed() {
+    console.log("destoryed" + "register");
+  },
   methods: {
     register: function() {
       if (this.username.length < 2) {

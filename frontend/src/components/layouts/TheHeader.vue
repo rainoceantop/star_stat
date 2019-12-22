@@ -7,7 +7,10 @@
         </h3>
       </div>
       <nav class="nav">
-        <router-link :to="{name: 'create', params: {iscreate: true}}">
+        <router-link :to="{name: 'create'}">
+          <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
+        </router-link>
+        <router-link :to="{name: 'update'}">
           <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
         </router-link>
         <router-link to="/articles/list">

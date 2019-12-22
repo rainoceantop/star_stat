@@ -42,9 +42,15 @@ const routes = [
   }
   ,
   {
+    path: '/articles/update',
+    name: 'update',
+    component: () => import('../views/articles/create.vue'),
+    props: true
+  }
+  ,
+  {
     path: '/articles/list',
     name: 'list',
-
     component: () => import('../views/articles/list.vue'),
   }
   ,

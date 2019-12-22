@@ -3,7 +3,7 @@
     <div class="article_list">
       <ul>
         <li v-for="item of articles" :key="item._id">
-          <router-link :to="{name:'show',params:{aid: item._id}}">
+          <router-link :to="{name:'show',params:{aid: item._id, iscreate:false}}">
             <h4>{{item.title}}</h4>
             <div>{{item.content}}</div>
           </router-link>
@@ -21,25 +21,81 @@ export default {
       articles: []
     };
   },
-  created() {},
+  props: ["author"],
+  beforeCreate() {
+    console.log("beforeCreate" + "list");
+  },
+  created() {
+    console.log("created" + "list");
+    this.initData();
+    // this.getSelfArticles();
+  },
+  beforeMount() {
+    console.log("beforeMount" + "list");
+  },
+  mounted() {
+    console.log("mounted" + "list");
+  },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate" + "list");
+  // },
+  // updated() {
+  //   console.log("updated" + "list");
+  // },
+  beforeActivated() {
+    console.log("beforeActivated" + "list");
+  },
   activated() {
-    this.getSelfArticles();
+    console.log("Activated" + "list");
+    this.changeDate();
+  },
+  beforeDestory() {
+    console.log("beforeDestory" + "list");
+  },
+  destoryed() {
+    console.log("destoryed" + "list");
   },
   methods: {
-    getSelfArticles() {
-      if (this.$store.state.articles.length === 0) {
-        this.$axios
-          .post("http://192.168.0.113:3001/article/getSelfArticles")
-          .then(res => {
-            this.articles = res.data.info;
-            console.log("调取后台list");
-            this.$store.commit("getSelfArticles", res.data.info);
-          });
+    initData() {
+      if (this.articles.length <= 0) {
+        console.log("需要调取后台数据");
+        this.$store.dispatch("getSelfArticles").then(res => {
+          this.articles = res.data.info;
+          this.$store.commit("getSelfArticles", this.articles);
+        });
       } else {
-        this.data.articles = this.$store.state.articles;
+        console.log("不需要调取后台数据i");
+      }
+    },
+    changeDate() {
+      if (this.$store.state.articles == this.articles) {
+        console.log("不需要改变c");
+      } else {
+        console.log("需要改变c");
+        this.articles = this.$store.state.articles;
       }
     }
   }
+  // methods: {
+  //   getSelfArticles() {
+  //     console.log("getSelfArticles");
+  //     if (this.$store.state.articles != this.articles) {
+  //       this.$axios
+  //         .post("http://192.168.1.100:3001/article/getSelfArticles")
+  //         .then(res => {
+  //           this.articles = res.data.info;
+  //           this.$store.commit("getSelfArticles", res.data.info);
+  //         });
+  //     } else {
+  //       console.log(this.articles);
+  //       console.log(this.$store.state.articles);
+  //       if (this.articles != this.$store.state.articles) {
+  //         this.articles = this.$store.state.articles;
+  //       }
+  //       // this.data.articles = this.$store.state.articles;
+  //     }
+  //   }
+  // }
 };
 </script>
 

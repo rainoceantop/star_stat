@@ -8,5 +8,11 @@ class ArticleMiddleware{
     static getArticle(req, res, next) {
         next()
     }
+    static delete(req, res, next) {
+        next()
+    }
+    static update(req, res, next) {
+        next()
+    }
 }
 module.exports = ArticleMiddleware

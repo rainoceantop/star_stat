@@ -38,6 +38,37 @@ export default {
       errorlabel: ""
     };
   },
+  beforeCreate() {
+    console.log("beforeCreate" + "login");
+  },
+  created() {
+    console.log("created" + "login");
+  },
+  beforeMount() {
+    console.log("beforeMount" + "login");
+  },
+  mounted() {
+    console.log("mounted" + "login");
+  },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate" + "login");
+  // },
+  // updated() {
+  //   console.log("updated" + "login");
+  // },
+  beforeActivated() {
+    console.log("beforeActivated" + "login");
+  },
+  activated() {
+    console.log("beforeActivated" + "login");
+  },
+
+  beforeDestory() {
+    console.log("beforeDestory" + "login");
+  },
+  destoryed() {
+    console.log("destoryed" + "login");
+  },
   computed: {
     mailitem: function() {
       return this.email.length === 0 ? "" : "keyup";

@@ -9,15 +9,15 @@ export default new Vuex.Store({
   state: {
     articles: [],
     user: {},
-    article: []
+    article: {}
   },
   mutations: {
     login(state, user) {
       state.user = user
-      console.log(user);
     },
-    creataArticle(state, article) {
+    createArticle(state, article) {
       state.article = article
+      state.articles.unshift(article)
     },
     getSelfArticles(state, articles) {
       state.articles = articles
@@ -30,33 +30,42 @@ export default new Vuex.Store({
         }
       }
     },
-    update(state, article) {
-      console.log(article)
+    updateArticle(state, article) {
       state.article = article
       for (let i = state.articles.length - 1; i >= 0; i--) {
         if (state.articles[i]._id === article.aid) {
           state.articles.splice(i, 1, article);
+          break;
         }
       }
     }
 
   },
   actions: {
+
+    //article
+    createArticle(context, params) {
+      return axios.post('http://192.168.1.100:3001/article/create', params)
+    },
     register(context, params) {
       console.log(axios)
-      return axios.post('http://192.168.0.113:3001/user/register', params)
+      return axios.post('http://192.168.1.100:3001/user/register', params)
       // context.commit('register',res,err)
     },
     login(context, params) {
-      return axios.post('http://192.168.0.113:3001/user/login', params)
+      return axios.post('http://192.168.1.100:3001/user/login', params)
     },
-    // articles
-    createArticle(context, params) {
-      return axios.post('http://192.168.0.113:3001/article/create', params)
-      // return axios.post('',parmas)
+    getSelfArticles(context) {
+      console.log(context)
+      return axios.post('http://192.168.1.100:3001/article/getSelfArticles')
     },
+    // // articles
+    // createArticle(context, params) {
+    //   return axios.post('http://192.168.1.100:3001/article/create', params)
+    //   // return axios.post('',parmas)
+    // },
     isLogin(context) {
-      axios.post('http://192.168.0.113:3001/user/isLogin').then(res => {
+      axios.post('http://192.168.1.100:3001/user/isLogin').then(res => {
         if (res.data.code === 1) {
           context.commit("login", res.data.info);
         } else {
@@ -64,9 +73,9 @@ export default new Vuex.Store({
         }
       })
     },
-    updateArticle(context, params) {
-      return axios.post('http://192.168.0.113:3001/article/update', params)
-    }
+    // updateArticle(context, params) {
+    //   return axios.post('http://192.168.1.100:3001/article/update', params)
+    // }
     // showAreticle(context,params){
 
     // }
