@@ -15,7 +15,7 @@ const routes = [
     path: '/login',
     name: 'login',
     beforeEnter: (to, from, next) => {
-      if (!store.state.user) {
+      if (!Reflect.has(store.state.user, '_id')) {
         next()
       } else {
         next('/')
@@ -37,14 +37,22 @@ const routes = [
   {
     path: '/articles/create',
     name: 'create',
-    component: () => import('../views/articles/create.vue')
+    component: () => import('../views/articles/create.vue'),
+    props: true
   }
   ,
   {
-    path: '/articles/list',
+    path: '/articles/update',
+    name: 'update',
+    component: () => import('../views/articles/create.vue'),
+    props: true
+  }
+  ,
+  {
+    path: '/articles/list/:author',
     name: 'list',
-
     component: () => import('../views/articles/list.vue'),
+    props: true
   }
   ,
   {

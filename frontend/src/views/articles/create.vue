@@ -21,7 +21,6 @@
 </template>
 
 <script>
-// import VueSimplemde from "vue-simplemde";
 export default {
   name: "create",
   data() {
@@ -32,39 +31,141 @@ export default {
       errorlable: ""
     };
   },
-  //   components: {
-  //     VueSimplemde
-  //   },
+  props: ["aid"],
+  beforeCreate() {
+    console.log("beforeCreate" + "create");
+  },
+  created() {
+    console.log("created" + "create");
+    // this.initData();
+  },
+  beforeMount() {
+    console.log("beforeMount" + "create");
+  },
+  mounted() {
+    console.log("mounted" + "create");
+  },
+  // beforeUpdate() {
+  //   console.log("beforeUpdate" + "create");
+  // },
+  // updated() {
+  //   console.log("updated" + "create");
+  // },
+  beforeActivated() {
+    console.log("beforeActivated" + "create");
+  },
+  activated() {
+    console.log("Activated" + "create");
+    // console.log(this.aid);
+  },
+
+  beforeDestory() {
+    console.log("beforeDestory" + "create");
+  },
+  destoryed() {
+    console.log("destoryed" + "create");
+  },
   methods: {
-    createArticle: function() {
+    createArticle() {
       if (this.title.length < 2 || this.content.length < 10) {
         this.error = true;
         this.errorlable = "标题必须文字必须大于2，文章内容必须大于10";
       } else {
-        this.error = false;
-        this.$store
-          .dispatch("createArticle", {
-            title: this.title,
-            content: this.content
-          })
-          .then(res => {
-            console.log(res);
-            if (res.data.code === 1) {
-              this.$store.commit("creataArticle", res.data.info);
+        if (this.$route.name === "create") {
+          this.title = "";
+          this.content = "";
+          console.log(this.$route.name);
+          this.$store
+            .dispatch("createArticle", {
+              title: this.title,
+              content: this.content
+            })
+            .then(res => {
+              this.$store.commit("createArticle", res.data.info[0]);
               const id = res.data.info[0]._id;
-
-              this.$router.push({
-                name: "show",
-                params: { aid: id }
-              });
-            } else {
-              console.log(res.data);
-              alert("服务器繁忙");
-            }
-          });
+              this.$router.push({ name: "show", params: { aid: id } });
+            });
+        } else if (this.$route.name === "update") {
+          console.log(this.$route.name);
+        }
       }
     }
   }
+  // methods: {
+  //   initData() {
+  //     this.error = false;
+  //     this.errorlable = "";
+  //     if (this.iscreate) {
+  //       this.title = "";
+  //       this.content = "";
+  //     } else {
+  //       const article = this.$store.state.articles.filter(
+  //         item => item._id === this.aid
+  //       )[0];
+  //       if (article) {
+  //         this.title = article.title;
+  //         this.content = article.content;
+  //       }
+  //     }
+  //   },
+  //   createArticle: function() {
+  //     if (this.title.length < 2 || this.content.length < 10) {
+  //       this.error = true;
+  //       this.errorlable = "标题必须文字必须大于2，文章内容必须大于10";
+  //     } else {
+  //       if (this.aid == null) {
+  //         this.error = false;
+  //         this.$store
+  //           .dispatch("createArticle", {
+  //             title: this.title,
+  //             content: this.content
+  //           })
+  //           .then(res => {
+  //             if (res.data.code === 1) {
+  //               this.$store.commit("creataArticle", res.data.info);
+  //               const id = res.data.info[0]._id;
+  //               this.$store.state.articles.unshift(res.data.info[0]);
+  //               this.$router.push({
+  //                 name: "show",
+  //                 params: { aid: id }
+  //               });
+  //             } else {
+  //               alert("服务器繁忙");
+  //             }
+  //           });
+  //       } else {
+  //         this.$store
+  //           .dispatch("updateArticle", {
+  //             aid: this.aid,
+  //             title: this.title,
+  //             content: this.content,
+  //             author: this.$store.state.article.author
+  //           })
+  //           .then(res => {
+  //             if (res.data.code === 1) {
+  //               console.log(this.$store.state.article);
+  //               this.$store.commit("updateArticle", {
+  //                 aid: this.aid,
+  //                 title: this.title,
+  //                 content: this.content,
+  //                 author: this.$store.state.article.author
+  //               });
+  //               console.log(this.aid);
+  //               this.$router.push({
+  //                 name: "show",
+  //                 params: { aid: this.aid }
+  //               });
+  //             }
+  //           });
+  //       }
+  //     }
+  //   }
+  // },
+  // watch: {
+  //   aid: function() {
+  //     this.initData();
+  //   }
+  // }
 };
 </script>
 

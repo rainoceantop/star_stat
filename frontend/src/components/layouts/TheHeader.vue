@@ -7,13 +7,16 @@
         </h3>
       </div>
       <nav class="nav">
-        <router-link to="/articles/create">
+        <router-link :to="{name: 'create'}">
           <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
         </router-link>
-        <router-link to="/articles/list">
+        <router-link :to="{name: 'update'}">
+          <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
+        </router-link>
+        <router-link :to="{name:'list',params:{author:this.$store.state.user._id}}">
           <font-awesome-icon :icon="blog" style="width:24px;height:24px;" />
         </router-link>
-        <router-link to="/login">
+        <router-link :to="{name:'login'}">
           <font-awesome-icon :icon="user" style="width:24px;height:24px;" />
         </router-link>
       </nav>
@@ -35,8 +38,8 @@ export default {
       logo: "blog",
       user: faUser,
       blog: faBook,
-      createblog: faBookMedical,
-      islogin: false
+      createblog: faBookMedical
+      // islogin: Reflect.has(this.$store.state, "user")
     };
   },
 

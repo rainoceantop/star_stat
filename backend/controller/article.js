@@ -39,7 +39,7 @@ class Article {
             if (!user) return res.json(resp(code.REQUEST_FAIL, '更新失败，尚未登陆'))
             const { aid, title, content, author } = req.body
             if (author !== user._id) return res.json(resp(code.REQUEST_FAIL, '更新失败，文章只有自己的可以更新'))
-            const result = await mongo.db.collection('article').updateOne({ _id: ObjectID(aid) }, {$set: {title, content}})
+            const result = await mongo.db.collection('article').updateOne({ _id: ObjectID(aid) }, { $set: { title, content } })
             console.log(result)
             return res.json(resp(code.REQUEST_SUCCESS, '更新成功'))
         } catch (error) {

@@ -53,7 +53,6 @@ export default {
   created() {
     // 判断后台是否记录用户信息
     this.$store.dispatch("isLogin");
-    console.log("qwe");
   },
   components: {
     TheHeader,

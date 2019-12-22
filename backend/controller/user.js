@@ -30,10 +30,10 @@ class User {
             const password = req.body.password
             const user = await mongo.db.collection('user').findOne({ email })
             // 判断用户是否存在
-            if(!user) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
+            if (!user) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
             // 用户存在，判断密码是否正确
             const password_sha1 = crypto.createHash('sha1').update(password).digest('hex')
-            if(password_sha1 !== user.password) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
+            if (password_sha1 !== user.password) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
             // 密码正确
             req.session.user = user
             return res.json(resp(code.REQUEST_SUCCESS, user))
@@ -43,7 +43,7 @@ class User {
     }
     static isLogin(req, res) {
         const user = req.session.user
-        if(user) return res.json(resp(code.REQUEST_SUCCESS, user))
+        if (user) return res.json(resp(code.REQUEST_SUCCESS, user))
         return res.json(resp(code.REQUEST_FAIL, null))
     }
 }
