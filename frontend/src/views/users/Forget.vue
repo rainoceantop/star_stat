@@ -44,7 +44,7 @@ export default {
         this.errorlabel = "请输入正确的邮箱";
       } else {
         this.error = false;
-        console.log("符合条件发送成功")
+        console.log("符合条件发送成功");
       }
     }
   }
@@ -52,5 +52,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/less/login.less";
+@import "../../assets/less/login.less";
 </style>

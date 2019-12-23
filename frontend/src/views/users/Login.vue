@@ -50,12 +50,6 @@ export default {
   mounted() {
     console.log("mounted" + "login");
   },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate" + "login");
-  // },
-  // updated() {
-  //   console.log("updated" + "login");
-  // },
   beforeActivated() {
     console.log("beforeActivated" + "login");
   },
@@ -112,5 +106,5 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../assets/less/login.less";
+@import "../../assets/less/login.less";
 </style>

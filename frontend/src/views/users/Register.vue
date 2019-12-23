@@ -74,19 +74,13 @@ export default {
   mounted() {
     console.log("mounted" + "register");
   },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate"+"register");
-  // },
-  // updated() {
-  //   console.log("updated"+"register");
-  // },
   beforeActivated() {
     console.log("beforeActivated" + "register");
   },
   activated() {
     console.log("beforeActivated" + "register");
+    this.islogin();
   },
-
   beforeDestory() {
     console.log("beforeDestory" + "register");
   },
@@ -94,6 +88,11 @@ export default {
     console.log("destoryed" + "register");
   },
   methods: {
+    islogin() {
+      if (Reflect.has(this.$store.state.user, "_id")) {
+        this.$router.push("/");
+      }
+    },
     register: function() {
       if (this.username.length < 2) {
         this.error = true;
@@ -134,5 +133,5 @@ export default {
 </script>
 
 <style lang="less">
-@import "../assets/less/login.less";
+@import "../../assets/less/login.less";
 </style>

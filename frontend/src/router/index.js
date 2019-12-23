@@ -21,17 +21,30 @@ const routes = [
         next('/')
       }
     },
-    component: () => import('../views/Login.vue')
+    component: () => import('../views/users/Login.vue')
   },
   {
     path: '/register',
     name: 'register',
-    component: () => import('../views/Register.vue')
+
+    component: () => import('../views/users/Register.vue')
   },
   {
     path: '/forget',
     name: 'forget',
-    component: () => import('../views/Forget.vue')
+    component: () => import('../views/users/Forget.vue')
+  }
+  ,
+  {
+    path: '/edit',
+    name: 'edit',
+    component: () => import('../views/users/Edit.vue')
+  }
+  ,
+  {
+    path: '/user/:uid',
+    name: 'index',
+    component: () => import('../views/users/Index.vue')
   }
   ,
   {
@@ -41,8 +54,9 @@ const routes = [
     props: true
   }
   ,
+
   {
-    path: '/articles/update',
+    path: '/articles/update/:aid',
     name: 'update',
     component: () => import('../views/articles/create.vue'),
     props: true

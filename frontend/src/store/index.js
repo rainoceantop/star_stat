@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     articles: [],
     user: {},
-    article: {}
+    // article: {}
   },
   mutations: {
     login(state, user) {
@@ -34,36 +34,42 @@ export default new Vuex.Store({
       }
     },
     updateArticle(state, article) {
-      state.article = article
-      for (let i = state.articles.length - 1; i >= 0; i--) {
-        if (state.articles[i]._id === article.aid) {
-          state.articles.splice(i, 1, article);
-          break;
+      state.article = article;
+    },
+    updateArticles(state, article) {
+      state.articles.map(item => {
+        if (article._id == item._id) {
+          item['title'] = article.title;
+          item['content'] = article.content;
         }
-      }
+        return item
+      })
     }
 
   },
   actions: {
-
+    // user
+    login(context, params) {
+      return axios.post('http://192.168.1.100:3001/user/login', params)
+    },
+    register(context, params) {
+      return axios.post('http://192.168.1.100:3001/user/register', params)
+    },
     //article
     createArticle(context, params) {
       return axios.post('http://192.168.1.100:3001/article/create', params)
     },
-    register(context, params) {
-      console.log(axios)
-      return axios.post('http://192.168.1.100:3001/user/register', params)
-      // context.commit('register',res,err)
-    },
+
     getArticle(context, params) {
-      return axios.post('http://192.168.1.100:3001/article/getArticle/' + params)
+      return axios.get('http://192.168.1.100:3001/article/getArticle/' + params)
     },
-    login(context, params) {
-      return axios.post('http://192.168.1.100:3001/user/login', params)
+    updateArticle(context, params) {
+      return axios.post('http://192.168.1.100:3001/article/update', params)
     },
+
     getSelfArticles(context, params) {
       console.log(context)
-      return axios.post('http://192.168.1.100:3001/article/getSelfArticles', params)
+      return axios.post('http://192.168.1.100:3001/article/getArticles/' + params)
     },
     // articles
 

@@ -1,14 +1,15 @@
 <template>
   <div class="article">
-    <div class="article_list">
-      <ul>
-        <li v-for="item of articles" :key="item._id">
-          <router-link :to="{name:'show',params:{aid: item._id}}">
-            <h4>{{item.title}}</h4>
-            <div>{{item.content}}</div>
-          </router-link>
-        </li>
-      </ul>
+    <div class="wrapper">
+      <div class="article_list">
+        <ul>
+          <li v-for="item of articles" :key="item._id">
+            <router-link :to="{name:'show',params:{aid: item._id}}">
+              <h4>{{item.title}}</h4>
+            </router-link>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -18,7 +19,8 @@ export default {
   name: "list",
   data() {
     return {
-      articles: []
+      articles: [],
+      change: true
     };
   },
   props: ["author"],
@@ -27,8 +29,7 @@ export default {
   },
   created() {
     console.log("created" + "list");
-    this.initData();
-    // this.getSelfArticles();
+    // this.initData();
   },
   beforeMount() {
     console.log("beforeMount" + "list");
@@ -36,18 +37,11 @@ export default {
   mounted() {
     console.log("mounted" + "list");
   },
-  // beforeUpdate() {
-  //   console.log("beforeUpdate" + "list");
-  // },
-  // updated() {
-  //   console.log("updated" + "list");
-  // },
   beforeActivated() {
     console.log("beforeActivated" + "list");
   },
   activated() {
     console.log("Activated" + "list");
-    // this.changeDate();
     this.initData();
   },
   beforeDestory() {
@@ -58,49 +52,24 @@ export default {
   },
   methods: {
     initData() {
-      if (this.articles.length <= 0) {
-        console.log("需要调取后台数据");
-        this.$store.dispatch("getSelfArticles", this.author).then(res => {
-          console.log(res);
+      //未使用vuex
+      this.$axios
+        .post(
+          "http://192.168.1.100:3001/article/getArticles/" +
+            this.$store.state.user._id
+        )
+        .then(res => {
           this.articles = res.data.info;
-          console.log(this.articles);
-          this.$store.commit("getSelfArticles", res.data.info);
-        });
-      } else {
-        console.log("不需要调取后台数据i");
-      }
+        })
+        .catch(err => console.error(err));
+      // this.$store.dispatch("getSelfArticles", this.author).then(res => {
+      //   this.articles = res.data.info;
+      //   this.$store.commit("getSelfArticles", res.data.info);
+      // });
     }
-    // changeDate() {
-    //   if (this.$store.state.articles == this.articles) {
-    //     console.log("不需要改变c");
-    //   } else {
-    //     console.log("需要改变c");
-    //     this.articles = this.$store.state.articles;
-    //   }
-    // }
   }
-  // methods: {
-  //   getSelfArticles() {
-  //     console.log("getSelfArticles");
-  //     if (this.$store.state.articles != this.articles) {
-  //       this.$axios
-  //         .post("http://192.168.1.100:3001/article/getSelfArticles")
-  //         .then(res => {
-  //           this.articles = res.data.info;
-  //           this.$store.commit("getSelfArticles", res.data.info);
-  //         });
-  //     } else {
-  //       console.log(this.articles);
-  //       console.log(this.$store.state.articles);
-  //       if (this.articles != this.$store.state.articles) {
-  //         this.articles = this.$store.state.articles;
-  //       }
-  //       // this.data.articles = this.$store.state.articles;
-  //     }
-  //   }
-  // }
 };
 </script>
 
-<style>
+<style lang="less" scoped>
 </style>
