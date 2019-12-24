@@ -29,7 +29,6 @@ export default {
   },
   created() {
     console.log("created" + "list");
-    // this.initData();
   },
   beforeMount() {
     console.log("beforeMount" + "list");

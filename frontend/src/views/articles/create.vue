@@ -175,6 +175,5 @@ export default {
 </script>
 
 <style lang='less' scoped>
-@import "~simplemde/dist/simplemde.min.css";
 @import "../../assets/less/articles.less";
 </style>

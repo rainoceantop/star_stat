@@ -10,7 +10,10 @@
         <router-link :to="{name: 'create' ,params:{aid :false}}" v-if="islogin">
           <font-awesome-icon :icon="createblog" style="width:24px;height:24px;" />
         </router-link>
-        <router-link :to="{name:'list',params:{author:this.$store.state.user._id}}" v-if="islogin">
+        <router-link
+          :to="{name:'profile',params:{author:this.$store.state.user._id}}"
+          v-if="islogin"
+        >
           <font-awesome-icon :icon="blog" style="width:24px;height:24px;" />
         </router-link>
         <router-link :to="{name:'index',params:{uid:this.$store.state.user._id}}" v-if="islogin">

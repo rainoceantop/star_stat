@@ -59,7 +59,6 @@ export default {
   activated() {
     console.log("Activated" + "show");
     this.initData();
-    this.isAuthor();
   },
   beforeDestory() {
     console.log("beforeDestory" + "show");
@@ -80,6 +79,8 @@ export default {
       // });
     },
     isAuthor() {
+      console.log(this.article.author);
+      console.log(this.$store.state.user._id);
       if (this.$store.state.user._id == this.article.author) {
         this.authorindex = true;
       }
@@ -105,7 +106,6 @@ export default {
           });
         })
         .catch(err => console.error(err));
-
       // this.$axios
       //   .post("http://192.168.1.100:3001/article/delete", {
       //     aid: this.aid,
@@ -121,6 +121,11 @@ export default {
       //       params: { author: this.$store.state.user._id }
       //     });
       //   });
+    }
+  },
+  watch: {
+    article() {
+      this.isAuthor();
     }
   }
 };

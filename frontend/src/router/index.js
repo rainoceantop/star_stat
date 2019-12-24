@@ -36,15 +36,31 @@ const routes = [
   }
   ,
   {
-    path: '/edit',
-    name: 'edit',
-    component: () => import('../views/users/Edit.vue')
+    path: '/profile/:uid',
+    name: 'profile',
+    component: () => import('../views/users/Profile.vue'),
+    props: true
+  }
+  ,
+  {
+    path: '/password/:uid',
+    name: 'editpassword',
+    component: () => import('../views/users/Password.vue'),
+    props: true
+  }
+  ,
+  {
+    path: '/acatar/:uid',
+    name: 'acatar',
+    component: () => import('../views/users/Acatar.vue'),
+    props: true
   }
   ,
   {
     path: '/user/:uid',
     name: 'index',
-    component: () => import('../views/users/Index.vue')
+    component: () => import('../views/users/Index.vue'),
+    props: true
   }
   ,
   {

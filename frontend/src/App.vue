@@ -21,12 +21,17 @@ a {
   color: #2c3e50;
 }
 #app {
+  background-color: #f8f8f8;
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
   display: grid;
+}
+ul,
+li {
+  list-style: none;
 }
 .primary_width,
 main {
@@ -37,6 +42,7 @@ main {
   min-height: calc(100vh - 96px);
   padding: 20px;
 }
+textarea,
 input {
   outline: medium;
 }
