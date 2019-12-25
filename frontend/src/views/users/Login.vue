@@ -1,26 +1,28 @@
 <template>
-  <div class="inputs_wrapper">
-    <h3>登录</h3>
-    <div :class="['wrapper_form',mailitem]">
-      <label class="form_label">邮箱</label>
-      <input class="form_text" type="text" v-model="email" required />
-    </div>
-    <div :class="['wrapper_form',passworditem]">
-      <label class="form_label">密码</label>
-      <input class="form_text" type="password" v-model="password" required />
-    </div>
-    <div v-if="error" :class="['message']">
-      <p>{{errorlabel}}</p>
-    </div>
-    <button type="submit" class="submit" @click="login">登录</button>
-    <div :class="['input_link']">
-      <p>
-        <router-link to="/forget">忘记密码？</router-link>
-      </p>
-      <p>
-        没有账号
-        <router-link to="/register">注册！</router-link>
-      </p>
+  <div class="warpper">
+    <div class="inputs_wrapper">
+      <h3>登录</h3>
+      <div :class="['wrapper_form',mailitem]">
+        <label class="form_label">邮箱</label>
+        <input class="form_text" type="text" v-model="email" required />
+      </div>
+      <div :class="['wrapper_form',passworditem]">
+        <label class="form_label">密码</label>
+        <input class="form_text" type="password" v-model="password" required />
+      </div>
+      <div v-if="error" :class="['message']">
+        <p>{{errorlabel}}</p>
+      </div>
+      <button type="submit" class="submit" @click="login">登录</button>
+      <div :class="['input_link']">
+        <p>
+          <router-link to="/forget">忘记密码？</router-link>
+        </p>
+        <p>
+          没有账号
+          <router-link to="/register">注册！</router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>

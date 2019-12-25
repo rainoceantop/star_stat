@@ -1,34 +1,36 @@
 <template>
-  <div class="inputs_wrapper">
-    <h3>注册</h3>
-    <div :class="['wrapper_form',mailitem]">
-      <label class="form_label">邮箱</label>
-      <input class="form_text" type="email" v-model="email" required />
-    </div>
-    <div :class="['wrapper_form',usernameitem]">
-      <label class="form_label">用户名</label>
-      <input class="form_text" type="text" v-model="username" required />
-    </div>
-    <div :class="['wrapper_form',passworditem]">
-      <label class="form_label">密码</label>
-      <input class="form_text" type="password" v-model="password" required />
-    </div>
-    <div :class="['wrapper_form',confirmitem]">
-      <label class="form_label">确认密码</label>
-      <input class="form_text" type="password" v-model="confirm" required />
-    </div>
-    <div v-if="error" :class="['message']">
-      <p>{{errorlabel}}</p>
-    </div>
-    <button type="submit" class="submit" @click="register">注册</button>
-    <div :class="['input_link']">
-      <p>
-        <router-link to="/forget">忘记密码？</router-link>
-      </p>
-      <p>
-        已有账号
-        <router-link to="/login">登录！</router-link>
-      </p>
+  <div class="wrapper">
+    <div class="inputs_wrapper">
+      <h3>注册</h3>
+      <div :class="['wrapper_form',mailitem]">
+        <label class="form_label">邮箱</label>
+        <input class="form_text" type="email" v-model="email" required />
+      </div>
+      <div :class="['wrapper_form',usernameitem]">
+        <label class="form_label">用户名</label>
+        <input class="form_text" type="text" v-model="username" required />
+      </div>
+      <div :class="['wrapper_form',passworditem]">
+        <label class="form_label">密码</label>
+        <input class="form_text" type="password" v-model="password" required />
+      </div>
+      <div :class="['wrapper_form',confirmitem]">
+        <label class="form_label">确认密码</label>
+        <input class="form_text" type="password" v-model="confirm" required />
+      </div>
+      <div v-if="error" :class="['message']">
+        <p>{{errorlabel}}</p>
+      </div>
+      <button type="submit" class="submit" @click="register">注册</button>
+      <div :class="['input_link']">
+        <p>
+          <router-link to="/forget">忘记密码？</router-link>
+        </p>
+        <p>
+          已有账号
+          <router-link to="/login">登录！</router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>

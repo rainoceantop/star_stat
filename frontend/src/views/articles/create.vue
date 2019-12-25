@@ -1,6 +1,6 @@
 <template>
-  <div class="article">
-    <div class="wrapper">
+  <div class="wrapper">
+    <div class="article">
       <div class="article_create">
         <div class="title">
           <label>标题</label>
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       article: {
-        _id: "",
+        aid: "",
         title: "",
         content: "",
         author: ""
@@ -76,14 +76,13 @@ export default {
           .catch(err => console.error(err));
       } else if (this.$route.name === "create") {
         this.article = {
-          _id: "",
+          aid: "",
           title: "",
           content: "",
           author: ""
         };
       }
       //使用vuex
-
       // if (this.$route.name === "update") {
       //   this.$store.dispatch("getArticle", this.aid).then(res => {
       //     this.article = res.data.info;
@@ -124,13 +123,14 @@ export default {
           //     this.$router.push({ name: "show", params: { aid: id } });
           //   });
         } else if (this.$route.name === "update") {
+          console.log(this.article);
           this.$axios
             .post("http://192.168.1.100:3001/article/update", this.article)
             .then(res => {
               console.log(res);
               this.$router.push({
                 name: "show",
-                params: { aid: this.article._id }
+                params: { aid: this.aid }
               });
             })
             .catch(err => console.error(err));

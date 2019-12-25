@@ -1,22 +1,20 @@
 <template>
-  <div class="user">
-    <div class="message">
-      <div class="avatar">
-        <div style="width"></div>
-      </div>
-    </div>
-    <div class="articles">
-      <div class="articles_tab">
-        <div>博客</div>
-      </div>
-      <div class="articles_list">
-        <ul>
-          <li v-for="item of articles" :key="item._id">
-            <router-link :to="{name:'show',params:{aid: item._id}}">
-              <h4>{{item.title}}</h4>
-            </router-link>
-          </li>
-        </ul>
+  <div class="wrapper">
+    <div class="wrapper_user"></div>
+    <div class="wrapper_articles">
+      <div class="articles">
+        <div class="articles_tab">
+          <div>博客</div>
+        </div>
+        <div class="articles_list">
+          <ul>
+            <li v-for="item of articles" :key="item._id">
+              <router-link :to="{name:'show',params:{aid: item._id}}">
+                <h4>{{item.title}}</h4>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -44,9 +42,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.user {
+.wrapper {
   display: flex;
-
-  border: 1px solid #333;
 }
 </style>

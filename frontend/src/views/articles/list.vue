@@ -1,6 +1,6 @@
 <template>
-  <div class="article">
-    <div class="wrapper">
+  <div class="wrapper">
+    <div class="article">
       <div class="article_list">
         <ul>
           <li v-for="item of articles" :key="item._id">

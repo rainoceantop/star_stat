@@ -1,21 +1,23 @@
 <template>
-  <div class="inputs_wrapper">
-    <h3>忘记密码？</h3>
-    <div :class="['wrapper_form',mailitem]">
-      <label class="form_label">邮箱</label>
-      <input class="form_text" type="email" v-model="email" required />
-    </div>
-    <div v-if="error" :class="['message']">
-      <p>{{errorlabel}}</p>
-    </div>
-    <button type="submit" class="submit" @click="email">发送验证到邮箱</button>
-    <div :class="['input_link']">
-      <p>
-        <router-link to="/register">注册？</router-link>
-      </p>
-      <p>
-        <router-link to="/login">登录！</router-link>
-      </p>
+  <div class="wrapper">
+    <div class="inputs_wrapper">
+      <h3>忘记密码？</h3>
+      <div :class="['wrapper_form',mailitem]">
+        <label class="form_label">邮箱</label>
+        <input class="form_text" type="email" v-model="email" required />
+      </div>
+      <div v-if="error" :class="['message']">
+        <p>{{errorlabel}}</p>
+      </div>
+      <button type="submit" class="submit" @click="email">发送验证到邮箱</button>
+      <div :class="['input_link']">
+        <p>
+          <router-link to="/register">注册？</router-link>
+        </p>
+        <p>
+          <router-link to="/login">登录！</router-link>
+        </p>
+      </div>
     </div>
   </div>
 </template>

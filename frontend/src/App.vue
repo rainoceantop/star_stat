@@ -35,7 +35,7 @@ li {
 }
 .primary_width,
 main {
-  max-width: 1200px;
+  width: 1200px;
   margin: 0 auto;
 }
 main {

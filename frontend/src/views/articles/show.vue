@@ -1,6 +1,6 @@
 <template>
-  <div class="article">
-    <div class="wrapper">
+  <div class="wrapper">
+    <div class="article">
       <div class="article_show">
         <div class="title">
           <h4>{{article.title}}</h4>

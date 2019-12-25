@@ -1,94 +1,99 @@
-.article {
-    .wrapper {
+.wrapper {
+    width: 80%;
+    margin: 0 auto;
+
+    .article {
+        width: 100%;
+
         background-color: #FFF;
         padding: 20px;
         border: 1px solid rgba(0, 0, 0, 1);
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 1);
-    }
 
-    .message {
-        width: inherit;
-        text-align: left;
+        &_show {
+            padding: 20px;
+            width: 100%;
 
-        label {
-            display: block;
+            .title {
+                .edit_delete {
+                    a {
+                        margin-left: 4px;
+                    }
+                }
+
+                display: flex;
+                justify-content: space-between;
+                text-align: left;
+                font-size: 24px;
+            }
+
+            .content {
+                text-align: left;
+            }
         }
 
-        input {
-            width: inherit;
-            border: 0px;
-            border-bottom: 1px solid rgba(0, 0, 0, 1);
-        }
-    }
+        &_create {
+            .message {
+                color: red;
+            }
 
-    &_show {
-        padding: 20px;
-        width: 60vw;
+            display: grid;
+            gap: 20px;
 
-        .title {
-            .edit_delete {
-                a {
-                    margin-left: 4px;
+            .title {
+                text-align: left;
+
+                label {
+                    width: 100%;
+                }
+
+                input {
+
+                    border: 0;
+                    border-bottom: 1px solid;
+                    width: 100%;
+                    font-size: 20px;
                 }
             }
 
-            display: flex;
-            justify-content: space-between;
-            text-align: left;
-            font-size: 24px;
-        }
-
-        .content {
-            text-align: left;
-        }
-    }
-
-    &_create {
-        .message {
-            color: red;
-        }
-
-        display: grid;
-        gap: 20px;
-
-        .title {
-            text-align: left;
-
-            label {
-                width: 100%;
-            }
-
-            input {
-
-                border: 0;
-                border-bottom: 1px solid;
-                width: 100%;
-                font-size: 20px;
-            }
-        }
-
-        .content {
-            text-align: left;
-
-            label {
+            .message {
+                width: inherit;
                 text-align: left;
+
+                label {
+                    display: block;
+                }
+
+                input {
+                    width: inherit;
+                    border: 0px;
+                    border-bottom: 1px solid rgba(0, 0, 0, 1);
+                }
             }
 
-            textarea {
-                width: 100%;
+            .content {
+                text-align: left;
+
+                label {
+                    text-align: left;
+                }
+
+                textarea {
+                    width: 100%;
+                }
             }
-        }
 
-        .submit {
-            text-align: left;
+            .submit {
+                text-align: left;
 
-            button {
-                padding: 4px 24px;
-                background: @primary_color;
-                border-radius: 8px;
-                border: 0;
-                color: #fff;
-                font-size: 16px;
+                button {
+                    padding: 4px 24px;
+                    background: @primary_color;
+                    border-radius: 8px;
+                    border: 0;
+                    color: #fff;
+                    font-size: 16px;
+                }
             }
         }
     }
