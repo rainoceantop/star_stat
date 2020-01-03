@@ -1,202 +1,145 @@
 <template>
-  <div class="wrapper">
-    <div class="wrapper_nav">
-      <!-- <EditUserNav /> -->
-      <div class="user_nav">
+  <div class="profile">
+    <div class="profile_box">
+      <div class="title">
+        <h3>
+          <font-awesome-icon :icon="titleIcon" class="fa_icon_big" />
+          <span>编辑个人资料</span>
+        </h3>
+      </div>
+      <div class="from_box">
+        <label>用户名：</label>
+        <a-input v-model="user.username"></a-input>
+      </div>
+      <div class="from_box">
+        <label>性别：</label>
+        <a-radio-group name="radioGroup" :defaultValue="1" v-model="user.sex">
+          <a-radio :value="1">男</a-radio>
+          <a-radio :value="0">女</a-radio>
+        </a-radio-group>
+      </div>
+      <div class="from_box">
+        <label>兴趣：</label>
+        <a-input placeholder="点回车增加兴趣" @keyup.enter="addInterest(hobby)" v-model="hobby"></a-input>
+      </div>
+      <div class="hobby_box">
         <ul>
-          <li>
-            <router-link :to="{name:'profile',params:{uid:$store.state.user._id}}">
-              <font-awesome-icon :icon="pro" style="width:24px;height:24px;" />个人信息
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{name:'acatar',params:{uid:$store.state.user._id}}">
-              <font-awesome-icon :icon="img" style="width:24px;height:24px;" />修改头像
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{name:'editpassword',params:{uid:$store.state.user._id}}">
-              <font-awesome-icon :icon="lock" style="width:24px;height:24px;" />修改密码
-            </router-link>
+          <li
+            v-for="hobby in user.hobbies"
+            :key="hobby"
+            class="tag-style"
+            :title="'点击移除兴趣：'+hobby"
+            @click="removeInterest(hobby)"
+          >
+            <a-button>{{ hobby }}</a-button>
           </li>
         </ul>
       </div>
-    </div>
-    <div class="wrapper_details">
-      <div class="user_details">
-        <h4>编辑个人信息</h4>
-        <hr />
-        <div class="from">
-          <section class="form_box">
-            <label>用户名:</label>
-            <input type="text" v-model="user.username" class="input" />
-          </section>
-          <section class="form_box">
-            <label>性别:</label>
-            <select v-model="user.sex">
-              <option disabled value>请选择</option>
-              <option>男</option>
-              <option>女</option>
-            </select>
-          </section>
-          <section class="form_box">
-            <label>兴趣:</label>
-            <input
-              type="text"
-              @keyup.enter="addInterest(interest)"
-              v-model="interest"
-              placeholder="按回车键添加兴趣"
-              class="input"
-            />
-          </section>
-          <div class="interestlist">
-            <ul>
-              <li
-                v-for="inte in user.interests"
-                :key="inte"
-                class="tag-style"
-                :title="'点击移除标签：'+inte"
-                @click="removeInterest(inte)"
-              >{{ inte }}</li>
-            </ul>
-          </div>
-          <section class="form_box">
-            <label>个人简介:</label>
-            <textarea v-model="user.profile" cols="30" rows="3"></textarea>
-          </section>
-          <section class="form_box">
-            <input class="button" type="submit" />
-          </section>
-        </div>
+      <div class="from_box">
+        <label>个人简介：</label>
+        <textarea style="width:100%" v-model="user.introduction"></textarea>
       </div>
+      <a-button type="primary" @click="updateProfile()">确认修改</a-button>
     </div>
   </div>
 </template>
 
 <script>
-// import EditUserNav from "@/components/layouts/EditUserNav.vue";
-import { faIdCard, faImage, faLock } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faUserCog } from "@fortawesome/free-solid-svg-icons";
+import { Input, Radio, Button } from "ant-design-vue";
 export default {
-  name: "profile",
+  name: "EditProfile",
   data() {
     return {
-      pro: faIdCard,
-      img: faImage,
-      lock: faLock,
-      interest: "",
+      hobby: "",
+      titleIcon: faUserCog,
       user: {
-        username: "",
-        sex: "",
-        interests: [],
-        profile: ""
+        username: "", // 用户名
+        sex: "", // 性别
+        hobbies: [], // 兴趣
+        introduction: "" // 个人简介
       }
     };
   },
-  props: ["uid"],
   components: {
-    FontAwesomeIcon
-    // EditUserNav
+    FontAwesomeIcon,
+    [Radio.name]: Radio,
+    [Button.name]: Button,
+    [Radio.Group.name]: Radio.Group,
+    [Input.name]: Input
   },
-
+  created() {
+    const user = this.$store.state.user;
+    if (user && typeof user === "object") {
+      const { name, sex, hobbies, introduction } = user;
+      this.username = name;
+      this.sex = sex || this.sex;
+      this.hobbies = hobbies || this.hobbies;
+      this.introduction = introduction;
+    }
+  },
   methods: {
-    addInterest(interest) {
-      this.interest = "";
-      interest = interest.replace(/[\s#]+/g, "");
-      if (this.user.interests.includes(interest)) {
+    initData() {},
+    updateProfile() {
+      const user = {
+        username: this.username,
+        sex: this.sex,
+        hobbies: this.hobbies,
+        introduction: this.introduction
+      };
+      this.$store.dispatch("updateUser", user).then(res => {
+        console.log(res);
+        alert("更新成功");
+      });
+    },
+    addInterest(hobby) {
+      this.hobby = "";
+      hobby = hobby.replace(/[\s#]+/g, "");
+      if (this.user.hobbies.includes(hobby)) {
         alert("已有该兴趣");
-      } else if (interest) {
-        this.user.interests.push(interest);
+      } else if (hobby) {
+        this.user.hobbies.push(hobby);
       }
     },
-    removeInterest(interest) {
-      for (let i of this.user.interests.keys()) {
-        if (this.user.interests[i] === interest) {
-          this.user.interests.splice(i, 1);
+    removeInterest(hobby) {
+      for (let i of this.user.hobbies.keys()) {
+        if (this.user.hobbies[i] === hobby) {
+          this.user.hobbies.splice(i, 1);
           break;
         }
       }
-    },
-    islogin() {
-      if (Reflect.has(this.$store.state.user, "_id")) {
-        if (!(this.$store.state.user._id === this.uid)) {
-          this.$router.push("/");
-        }
-      } else {
-        this.$router.push("/");
-      }
     }
-  },
-  activated() {
-    this.islogin();
   }
 };
 </script>
 
-<style lang="less" scpoed>
-.wrapper {
-  width: 80%;
-  display: flex;
-  margin: 0 auto;
-  &_nav {
-    margin-right: 30px;
-    .user_nav {
-      background-color: #fff;
-      box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.3);
-      padding: 20px;
-      ul > li {
-        padding: 10px;
-        vertical-align: middle;
-        font-size: 20px;
+<style lang="less" scoped>
+.profile {
+  &_box {
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      h3 {
+        display: flex;
+        align-items: center;
       }
     }
-  }
-  &_details {
-    flex: 1;
-    .user_details {
-      box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.3);
-      padding: 20px;
-      background-color: #fff;
-      h4 {
-        text-align: left;
-        font-size: 32px;
+    .from_box {
+      display: flex;
+      padding: 8px 0px;
+      align-items: center;
+      label {
+        text-align: right;
+        min-width: 80px;
       }
-      .interestlist {
-        ul {
-          text-align: left;
-          li {
-            display: inline-block;
-            margin-right: 4px;
-            margin-bottom: 4px;
-            padding: 4px;
-            background: @primary_color;
-            color: #fff;
-            cursor: pointer;
-          }
-        }
-      }
-      .form_box {
-        padding: 10px 0px;
+    }
+    .hobby_box {
+      ul {
         display: flex;
-        label {
-          width: 80px;
-          font-size: 16px;
-
-          text-align: right;
-        }
-        .input {
-          flex: 1;
-          border: 0px;
-          border-bottom: 1px solid #000;
-          min-width: 200px;
-        }
-        .button {
-          border: 0;
-          background: @primary_color;
-          width: 100px;
-          height: 40px;
-          font-size: 24px;
-          color: white;
+        flex-wrap: wrap;
+        li {
+          margin: 0px 4px 4px 0px;
         }
       }
     }

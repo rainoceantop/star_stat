@@ -9,7 +9,4 @@ export default {
 </script>
 
 <style>
-.footer {
-  height: 48px;
-}
 </style>

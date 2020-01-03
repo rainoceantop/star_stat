@@ -1,12 +1,22 @@
 <template>
-  <div class="wrapper">
-    <div class="article">
-      <div class="article_list">
+  <div class="articleslist">
+    <div class="articleslistbox">
+      <div class="title">
+        <h3>文章专栏</h3>
+        <a-button type="primary" @click="create">
+          <a-icon type="highlight" />创作文章
+        </a-button>
+      </div>
+      <div class="articles">
         <ul>
-          <li v-for="item of articles" :key="item._id">
-            <router-link :to="{name:'show',params:{aid: item._id}}">
-              <h4>{{item.title}}</h4>
+          <li v-for="(article,index) in articles" :key="index">
+            <router-link :to="`/articles/${article.articleId}/content`" class="title">
+              <img v-if="user" :src="user.avatar" class="avatar" />
+              <span>{{ article.title }}</span>
             </router-link>
+            <!-- <span class="meta pull-right">
+              <span class="timeago">{{ $moment(article.date).fromNow() }}</span>
+            </span>-->
           </li>
         </ul>
       </div>
@@ -15,60 +25,81 @@
 </template>
 
 <script>
+import { Button, Icon } from "ant-design-vue";
 export default {
   name: "list",
   data() {
     return {
-      articles: [],
-      change: true
+      isauthor: false,
+      user: {},
+      articles: []
     };
   },
-  props: ["author"],
-  beforeCreate() {
-    console.log("beforeCreate" + "list");
+  components: {
+    [Button.name]: Button,
+    [Icon.name]: Icon
   },
   created() {
-    console.log("created" + "list");
-  },
-  beforeMount() {
-    console.log("beforeMount" + "list");
-  },
-  mounted() {
-    console.log("mounted" + "list");
-  },
-  beforeActivated() {
-    console.log("beforeActivated" + "list");
-  },
-  activated() {
-    console.log("Activated" + "list");
+    console.log("created.list");
     this.initData();
   },
-  beforeDestory() {
-    console.log("beforeDestory" + "list");
-  },
-  destoryed() {
-    console.log("destoryed" + "list");
-  },
   methods: {
+    create() {
+      this.$router.push({ name: "Create" });
+    },
     initData() {
-      //未使用vuex
+      //通过axios获取数据，闯入用户ID（从路由获取）,获取传入ID的所有的
+      // this.axios.post();
       this.$axios
         .post(
-          "http://192.168.1.100:3001/article/getArticles/" +
-            this.$store.state.user._id
+          "http://192.168.0.100:3001/article/getArticles/" +
+            this.$router.params.uid
         )
         .then(res => {
-          this.articles = res.data.info;
-        })
-        .catch(err => console.error(err));
-      // this.$store.dispatch("getSelfArticles", this.author).then(res => {
-      //   this.articles = res.data.info;
-      //   this.$store.commit("getSelfArticles", res.data.info);
-      // });
+          console.log("initdata");
+          console.log(res);
+        });
     }
   }
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
+.articleslist {
+  &box {
+    background: white;
+    padding: 20px;
+    .title {
+      h3 {
+        font-size: 24px;
+        font-weight: bold;
+      }
+      display: flex;
+      justify-content: space-between;
+    }
+    .articles {
+      ul {
+        li {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 0px;
+          border-bottom: 1px solid #ddd;
+          a {
+            font-size: 20px;
+            color: #222;
+            display: flex;
+            align-items: center;
+            img {
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>

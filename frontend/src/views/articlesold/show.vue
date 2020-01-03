@@ -41,36 +41,17 @@ export default {
   components: {
     FontAwesomeIcon
   },
-  beforeCreate() {
-    console.log("beforeCreate" + "show");
-  },
-  created() {
-    console.log("created" + "show");
-  },
-  beforeMount() {
-    console.log("beforeMount" + "show");
-  },
-  mounted() {
-    console.log("mounted" + "show");
-  },
-  beforeActivated() {
-    console.log("beforeActivated" + "show");
-  },
+
   activated() {
     console.log("Activated" + "show");
     this.initData();
   },
-  beforeDestory() {
-    console.log("beforeDestory" + "show");
-  },
-  destoryed() {
-    console.log("destoryed" + "show");
-  },
+
   methods: {
     initData() {
       //未使用vuex
       this.$axios
-        .get("http://192.168.1.100:3001/article/getArticle/" + this.aid)
+        .get("http://192.168.0.100:3001/article/getArticle/" + this.aid)
         .then(res => {
           this.article = res.data.info;
         });
@@ -94,7 +75,7 @@ export default {
     deletearticle: function() {
       //未使用vuex
       this.$axios
-        .post("http://192.168.1.100:3001/article/delete", {
+        .post("http://192.168.0.100:3001/article/delete", {
           aid: this.aid,
           author: this.$store.state.user._id
         })
@@ -107,7 +88,7 @@ export default {
         })
         .catch(err => console.error(err));
       // this.$axios
-      //   .post("http://192.168.1.100:3001/article/delete", {
+      //   .post("http://192.168.0.100:3001/article/delete", {
       //     aid: this.aid,
       //     author: this.$store.state.user._id
       //   })
