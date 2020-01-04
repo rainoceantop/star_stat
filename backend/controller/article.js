@@ -7,11 +7,12 @@ class Article {
         try {
             const user = req.session.user
             if (!user) return res.json(resp(code.REQUEST_FAIL, '创建失败，尚未登陆'))
-            const title = req.body.title
-            const content = req.body.content
+            const {title, content,} = req.body
             const result = await mongo.insert('article', {
                 author: user._id,
-                title, content
+                avatar: user.avatar,
+                title, content, date: new Date(),
+                like_users: []
             })
             return res.json(resp(code.REQUEST_SUCCESS, result.ops))
         } catch (error) {

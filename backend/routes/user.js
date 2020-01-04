@@ -7,5 +7,8 @@ const UserMiddleware = require('../middleware/user')
 router.post('/register', UserMiddleware.register, UserController.register)
 router.post('/login', UserMiddleware.login, UserController.login)
 router.post('/isLogin', UserMiddleware.isLogin, UserController.isLogin)
+router.post('/logout', UserMiddleware.logout, UserController.logout)
+router.post('/userInfo', UserMiddleware.userInfo, UserController.userInfo)
+router.post('/userUpdate', UserMiddleware.userUpdate, UserController.userUpdate)
 
 module.exports = router
