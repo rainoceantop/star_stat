@@ -17,7 +17,7 @@ app.set('view engine', 'jade')
 app.use(logger('dev'))
 
 app.use(cors({
-  origin: ['http://192.168.0.102:8080', 'http://192.168.0.112:8080', 'http://192.168.0.100:8080', 'http://localhost:8080', 'http://192.168.1.110:8080'],
+  origin: ['http://192.168.0.104:8080', 'http://localhost:8080'],
   credentials: true,
 }))
 app.use(express.json())

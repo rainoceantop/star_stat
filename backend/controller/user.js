@@ -2,11 +2,10 @@ const crypto = require('crypto')
 const mongo = require('../libs/mongo')
 const resp = require('../utils/resp')
 const code = require('../constants/code')
+const {ObjectID} = require('mongodb')
 class User {
     static async register(req, res) {
-        const username = req.body.username
-        const email = req.body.email
-        const password = req.body.password
+        const {username, email, password, avatar} = req.body
         try {
             let user = await mongo.db.collection('user').findOne({ email })
             // 判断用户是否存在
@@ -15,7 +14,8 @@ class User {
             const result = await mongo.insert('user', {
                 username: username,
                 email: email,
-                password: crypto.createHash('sha1').update(password).digest('hex')
+                password: crypto.createHash('sha1').update(password).digest('hex'),
+                avatar
             })
             req.session.user = result.ops[0]
             return res.json(resp(code.REQUEST_SUCCESS, result.ops[0]))
@@ -28,7 +28,7 @@ class User {
         try {
             const email = req.body.email
             const password = req.body.password
-            const user = await mongo.db.collection('user').findOne({ email })
+            let user = await mongo.db.collection('user').findOne({ email })
             // 判断用户是否存在
             if (!user) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
             // 用户存在，判断密码是否正确
@@ -36,15 +36,65 @@ class User {
             if (password_sha1 !== user.password) return res.json(resp(code.REQUEST_FAIL, '登录失败，账号或密码错误'))
             // 密码正确
             req.session.user = user
+            Reflect.deleteProperty(user, 'password')
             return res.json(resp(code.REQUEST_SUCCESS, user))
         } catch (error) {
             return res.json(resp(code.REQUEST_FAIL, '登录失败，后台错误'))
         }
     }
     static isLogin(req, res) {
-        const user = req.session.user
+        let user = req.session.user
+        Reflect.deleteProperty(user || {}, 'password')
         if (user) return res.json(resp(code.REQUEST_SUCCESS, user))
         return res.json(resp(code.REQUEST_FAIL, null))
+    }
+    static logout(req, res) {
+        Reflect.deleteProperty(req.session, 'user')
+        return res.json(resp(code.REQUEST_SUCCESS, '退出登录成功'))        
+    }
+    static async userInfo(req, res) {
+        // 获取用户信息
+        try {
+            const _id = req.body.uid
+            let user = await mongo.db.collection('user').findOne({ _id: ObjectID(_id) })
+            Reflect.deleteProperty(user, 'password')
+            return res.json(resp(code.REQUEST_SUCCESS, user))
+        } catch (error) {
+            return res.json(resp(code.REQUEST_FAIL, '用户信息获取失败'))
+        }
+    }
+    static async userUpdate(req, res) {
+        // 获取用户信息
+        try {
+            console.log(req.body)
+            const _id = req.session.user._id
+            const {username, sex, introduction, hobbies} = req.body
+            await mongo.db.collection('user').updateOne({_id: ObjectID(_id)}, {$set: {
+                username, sex, introduction, hobbies
+            }})
+            return res.json(resp(code.REQUEST_SUCCESS, '用户更新成功'))
+        } catch (error) {
+            console.error(error)
+            return res.json(resp(code.REQUEST_FAIL, '用户更新失败'))
+        }
+    }
+    static async modifyPassword(req, res) {
+        try {
+            let {old_password, new_password} = req.body
+            const _id = req.session.user._id
+            const user = await mongo.db.collection('user').findOne({_id: ObjectID(_id)})
+            // 判断旧密码是否正确
+            old_password = crypto.createHash('sha1').update(old_password).digest('hex')
+            if(old_password !== user.password) return res.json(resp(code.REQUEST_FAIL, '密码修改失败：旧密码错误'))
+            new_password = crypto.createHash('sha1').update(new_password).digest('hex')
+            await mongo.db.collection('user').updateOne({_id: ObjectID(_id)}, {$set: {
+                password: new_password
+            }})
+            return res.json(resp(code.REQUEST_SUCCESS, '密码修改成功'))
+        } catch (error) {
+            console.error(error)
+            return res.json(resp(code.REQUEST_FAIL, '用户更新失败'))
+        }
     }
 }
 
