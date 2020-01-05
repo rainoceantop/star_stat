@@ -8,7 +8,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     auth: ls.getItem('auth'),
-    user: ls.getItem('user')
+    user: ls.getItem('user'),
+    article: ls.getItem('article')
     // article: {}
   },
   mutations: {
@@ -21,16 +22,30 @@ export default new Vuex.Store({
       state.user = user
       ls.setItem('user', user)
     },
-    createArticle(state, article) {
-      state.article = article
-      state.articles.unshift(article)
+    updateUser(state, user) {
+      state.user._id = user._id
+      state.user.avatar = user.avatar
+      state.user.email = user.email
+      state.user.username = user.username
+      state.user.sex = user.sex
+      state.user.hobbies = user.hobbies
+      state.user.introduction = user.introduction
+      ls.setItem('user', user)
     },
+
     getArticle(state, article) {
       state.article = article
     },
-    getSelfArticles(state, articles) {
-      state.articles = articles
-    },
+    // createArticle(state, article) {
+    //   state.article = article
+    //   state.articles.unshift(article)
+    // },
+    // getArticle(state, article) {
+    //   state.article = article
+    // },
+    // getSelfArticles(state, articles) {
+    //   state.articles = articles
+    // },
     removeArticle(state, aid) {
       for (let i = state.articles.length - 1; i >= 0; i--) {
         if (state.articles[i]._id === aid) {
@@ -56,54 +71,58 @@ export default new Vuex.Store({
   actions: {
     // auth
     login(context, params) {
-      return axios.post('http://192.168.0.100:3001/user/login', params);
+      return axios.post('http://192.168.0.106:3001/user/login', params);
 
     },
     register(context, params) {
-      return axios.post('http://192.168.0.100:3001/user/register', params)
+      return axios.post('http://192.168.0.106:3001/user/register', params)
     },
-    //user
 
+    //user
+    updateUser(context, params) {
+      console.log("params", params)
+      return axios.post('http://192.168.0.106:3001/user/userUpdate', params)
+    },
     //article
     post(context, params) {
       const articleId = params.articleId;
       if (articleId != undefined) {
         //有文章id,则为修改
-        return axios.post('http://192.168.0.100:3001/article/update', params)
+        return axios.post('http://192.168.0.106:3001/article/update', params)
       } else {
         //无文章id,则为创建
-        return axios.post('http://192.168.0.100:3001/article/create', params)
+        return axios.post('http://192.168.0.106:3001/article/create', params)
       }
 
     },
     createArticle(context, params) {
-      return axios.post('http://192.168.0.100:3001/article/create', params)
+      return axios.post('http://192.168.0.106:3001/article/create', params)
     },
 
     getArticle(context, params) {
-      return axios.get('http://192.168.0.100:3001/article/getArticle/' + params)
+      return axios.get('http://192.168.0.106:3001/article/getArticle/' + params)
     },
     updateArticle(context, params) {
-      return axios.post('http://192.168.0.100:3001/article/update', params)
+      return axios.post('http://192.168.0.106:3001/article/update', params)
     },
 
     getSelfArticles(context, params) {
       console.log(context)
-      return axios.post('http://192.168.0.100:3001/article/getArticles/' + params)
+      return axios.post('http://192.168.0.106:3001/article/getArticles/' + params)
     },
     // articles
     isLogin(context) {
-      axios.post('http://192.168.0.100:3001/user/isLogin').then(res => {
+      axios.post('http://192.168.0.106:3001/user/isLogin').then(res => {
         if (res.data.code === 1) {
           context.commit("login", res.data.info);
-          console.log(res)
+          console.log("islogin", res)
         } else {
-          console.log(res)
+          console.log("islogin1", res)
         }
       })
     },
     // updateArticle(context, params) {
-    //   return axios.post('http://192.168.0.100:3001/article/update', params)
+    //   return axios.post('http://192.168.0.106:3001/article/update', params)
     // }
     // showAreticle(context,params){
 

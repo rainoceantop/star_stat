@@ -27,7 +27,6 @@
 
 <script>
 import { Input, Button } from "ant-design-vue";
-// import ls from "@/utils/localStorage";
 export default {
   name: "Create",
   data() {
@@ -43,8 +42,22 @@ export default {
     [Input.name]: Input,
     [Button.name]: Button
   },
-  props: ["articleId"],
+  props: ["uid", "articleId"],
+  created() {
+    this.initData();
+  },
+  mounted() {
+    console.log("create mounted");
+  },
   methods: {
+    initData() {
+      console.log(this.uid, this.articleId);
+      if (this.articleId == undefined) {
+        console.log("create");
+      } else {
+        console.log("edit");
+      }
+    },
     // 发布
     post() {
       const article = {
@@ -57,13 +70,24 @@ export default {
       if (article.title !== "" && article.content.trim() !== "") {
         this.$store.dispatch("post", article).then(res => {
           console.log(res);
-          console.log("创建或者修改成功");
           this.$router.push({
             name: "Content",
-            params: { articleId: res.data.info[0]._id }
+            params: {
+              uid: this.$store.state._id,
+              articleId: res.data.info[0]._id
+            }
           });
         });
         // 在控制台输出当前文章
+      }
+    }
+  },
+  watch: {
+    $route: function() {
+      if (this.$route.name == "Edit") {
+        console.log("edit");
+      } else if (this.$route.name == "Create") {
+        console.log("Create");
       }
     }
   }

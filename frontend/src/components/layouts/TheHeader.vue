@@ -84,6 +84,10 @@ export default {
       ls.removeItem("user");
       this.$store.state.auth = "";
       this.$store.state.user = "";
+      this.$axios.post("http://192.168.0.106:3001/user/logout").then(res => {
+        console.log(res);
+      });
+      // axios.post('http://192.168.0.106:3001/user/login', params)
       this.$router.push({ name: "Home" });
     }
   },

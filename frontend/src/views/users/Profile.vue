@@ -55,10 +55,10 @@ export default {
       hobby: "",
       titleIcon: faUserCog,
       user: {
-        username: "", // 用户名
-        sex: "", // 性别
-        hobbies: [], // 兴趣
-        introduction: "" // 个人简介
+        username: "",
+        sex: "",
+        hobbies: [],
+        introduction: ""
       }
     };
   },
@@ -70,27 +70,35 @@ export default {
     [Input.name]: Input
   },
   created() {
-    const user = this.$store.state.user;
-    if (user && typeof user === "object") {
-      const { name, sex, hobbies, introduction } = user;
-      this.username = name;
-      this.sex = sex || this.sex;
-      this.hobbies = hobbies || this.hobbies;
-      this.introduction = introduction;
-    }
+    this.initData();
+    console.log("profile");
   },
   methods: {
-    initData() {},
+    initData() {
+      const uid = { uid: this.$route.params.uid };
+      this.$axios
+        .post("http://192.168.0.106:3001/user/userInfo", uid)
+        .then(res => {
+          this.user = {
+            username: res.data.info.username,
+            sex: res.data.info.sex || 0,
+            hobbies: res.data.info.hobbies || [],
+            introduction: res.data.info.introduction || ""
+          };
+        });
+    },
     updateProfile() {
-      const user = {
-        username: this.username,
-        sex: this.sex,
-        hobbies: this.hobbies,
-        introduction: this.introduction
-      };
-      this.$store.dispatch("updateUser", user).then(res => {
-        console.log(res);
-        alert("更新成功");
+      this.$store.dispatch("updateUser", this.user).then(res => {
+        this.$store.commit("updateUser", {
+          _id: this.$store.state.user._id,
+          avatar: this.$store.state.user.avatar,
+          email: this.$store.state.user.email,
+          username: this.user.username,
+          sex: this.user.sex,
+          hobbies: this.user.hobbies,
+          introduction: this.user.introduction
+        });
+        alert(res.data.info);
       });
     },
     addInterest(hobby) {
@@ -98,7 +106,7 @@ export default {
       hobby = hobby.replace(/[\s#]+/g, "");
       if (this.user.hobbies.includes(hobby)) {
         alert("已有该兴趣");
-      } else if (hobby) {
+      } else {
         this.user.hobbies.push(hobby);
       }
     },

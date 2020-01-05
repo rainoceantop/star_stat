@@ -67,7 +67,6 @@ export default {
         const user = {
           email: this.user.email,
           password: this.user.password
-          //   avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
         };
         ls.setItem("user", user);
         this.$store

@@ -15,13 +15,6 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    // beforeEnter: (to, from, next) => {
-    //   if (!Reflect.has(store.state.user, '_id')) {
-    //     next()
-    //   } else {
-    //     next('/')
-    //   }
-    // },
     component: () => import('../views/auth/Login.vue')
   },
   {
@@ -39,7 +32,6 @@ const routes = [
     component: () => import('@/views/users/Edit.vue'),
     children: [
       {
-
         path: '/users/:uid/edit_profile',
         name: 'EditProfile',
         component: () => import('@/views/users/Profile.vue'),
@@ -65,44 +57,48 @@ const routes = [
     name: 'forget',
     component: () => import('../views/auth/Forget.vue')
   },
-  // Create
-  {
-    path: '/articles/create',
-    name: 'Create',
-    component: () => import('@/views/articles/Create.vue'),
-    meta: { auth: true }
-  },
-  // Content
-  {
-    path: '/articles/:articleId/edit',
-    name: 'Edit',
-    component: () => import('@/views/articles/Create.vue'),
-    props: true,
-    meta: { auth: true }
-  },
+
   // Column
   {
     path: '/:uid',
     name: 'Column',
     props: true,
     redirect: '/:uid',
-    default: 'list',
+    default: 'List',
     component: () => import('@/views/articles/Column.vue'),
     children: [
       {
         path: '/:uid',
-        name: 'list',
+        name: 'List',
         props: true,
         component: () => import('@/views/articles/List.vue')
       },
       {
-        path: '/articles/:articleId/content',
+        path: '/:uid/articles/:articleId/content',
         name: 'Content',
         props: true,
         component: () => import('@/views/articles/Content.vue')
       }
     ]
   },
+  // Create
+  {
+    path: '/articles/create',
+    name: 'Create',
+    props: true,
+    component: () => import('@/views/articles/Create.vue'),
+    meta: { auth: true }
+  },
+  // Content
+  {
+    path: '/:uid/articles/:articleId/edit',
+    name: 'Edit',
+    component: () => import('@/views/articles/Create.vue'),
+    props: true,
+    meta: { auth: true }
+  },
+
+
   // 全局重定向
   {
     path: '*',

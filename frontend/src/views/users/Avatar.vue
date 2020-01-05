@@ -46,12 +46,7 @@ export default {
       fileList: []
     };
   },
-  created() {
-    const user = this.$store.state.user;
-    if (user && typeof user === "object") {
-      this.avatar = user.avatar;
-    }
-  },
+  created() {},
   components: {
     [Button.name]: Button,
     [Input.name]: Input,

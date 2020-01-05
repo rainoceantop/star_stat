@@ -24,7 +24,9 @@ export default {
   },
   created() {
     // 判断后台是否记录用户信息
-    this.$store.dispatch("isLogin");
+    // this.$store.dispatch("isLogin").then(res => {
+    //   console.log("isLogin", res);
+    // });
   },
   components: {
     TheHeader,

@@ -87,18 +87,19 @@ export default {
         const user = {
           email: this.email,
           username: this.username,
-          password: this.password
-          //   avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
+          password: this.password,
+          avatar: `https://api.adorable.io/avatars/200/${this.username}.png`
         };
         ls.setItem("user", user);
         this.$store
-          .dispatch("login", user)
+          .dispatch("register", user)
           .then(res => {
             if (res.data.code === 1) {
               this.$store.commit("login", res.data.info);
               this.$store.commit("UPDATE_AUTH", true);
               this.$router.push({ name: "home" });
             } else {
+              console.log(res);
               this.error = true;
               this.errorlabel = "该邮箱已注册";
             }

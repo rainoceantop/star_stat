@@ -10,13 +10,13 @@
       <div class="articles">
         <ul>
           <li v-for="(article,index) in articles" :key="index">
-            <router-link :to="`/articles/${article.articleId}/content`" class="title">
-              <img v-if="user" :src="user.avatar" class="avatar" />
+            <router-link :to="`/${article.author}/articles/${article._id}/content`" class="title">
+              <img :src="article.avatar" class="avatar" />
               <span>{{ article.title }}</span>
             </router-link>
-            <!-- <span class="meta pull-right">
+            <span class="meta pull-right">
               <span class="timeago">{{ $moment(article.date).fromNow() }}</span>
-            </span>-->
+            </span>
           </li>
         </ul>
       </div>
@@ -27,20 +27,18 @@
 <script>
 import { Button, Icon } from "ant-design-vue";
 export default {
-  name: "list",
+  name: "List",
   data() {
     return {
-      isauthor: false,
-      user: {},
       articles: []
     };
   },
+  props: ["uid"],
   components: {
     [Button.name]: Button,
     [Icon.name]: Icon
   },
   created() {
-    console.log("created.list");
     this.initData();
   },
   methods: {
@@ -48,16 +46,15 @@ export default {
       this.$router.push({ name: "Create" });
     },
     initData() {
-      //通过axios获取数据，闯入用户ID（从路由获取）,获取传入ID的所有的
-      // this.axios.post();
       this.$axios
         .post(
-          "http://192.168.0.100:3001/article/getArticles/" +
-            this.$router.params.uid
+          "http://192.168.0.106:3001/article/getArticles/" +
+            this.$route.params.uid
         )
         .then(res => {
-          console.log("initdata");
-          console.log(res);
+          if (res.data.code === 1) {
+            this.articles = res.data.info;
+          }
         });
     }
   }

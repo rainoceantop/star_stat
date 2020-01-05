@@ -9,15 +9,15 @@
       </div>
       <div class="from_box">
         <label>旧密码：</label>
-        <a-input type="password" v-model="oldpassword"></a-input>
+        <a-input type="password" v-model="old_password"></a-input>
       </div>
       <div class="from_box">
         <label>新密码：</label>
-        <a-input type="password" v-model="newpassword"></a-input>
+        <a-input type="password" v-model="new_password"></a-input>
       </div>
       <div class="from_box">
         <label>确认密码：</label>
-        <a-input type="password" v-model="newconfirm"></a-input>
+        <a-input type="password" v-model="new_confirm"></a-input>
       </div>
       <div v-if="error" :class="['message']">
         <p>{{errorlabel}}</p>
@@ -38,9 +38,9 @@ export default {
   data() {
     return {
       titleIcon: faUserLock,
-      oldpassword: "",
-      newpassword: "",
-      newconfirm: "",
+      old_password: "",
+      new_password: "",
+      new_confirm: "",
       p_reg: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/,
       error: false,
       errorlabel: ""
@@ -53,20 +53,27 @@ export default {
   },
   methods: {
     updatePassword() {
-      if (this.oldpassword != this.$store.state.user.password) {
-        this.error = true;
-        this.errorlabel = "密码错误重新输入";
-      } else if (!this.p_reg.test(this.newpassword)) {
+      if (!this.p_reg.test(this.new_password)) {
         this.error = true;
         this.errorlabel = "密码至少包含 数字和英文，长度6-20";
-      } else if (this.newpassword !== this.newconfirm) {
+      } else if (this.new_password !== this.new_confirm) {
         this.error = true;
         this.errorlabel = "两次输入的密码不一致";
       } else {
         this.error = false;
-        const password = this.newpassword;
-        this.$store.dispatch("updateUser", { password: password });
-        alert("更新成功");
+        this.$axios
+          .post("http://192.168.0.106:3001/user/modifyPassword", {
+            old_password: this.old_password,
+            new_password: this.new_password
+          })
+          .then(res => {
+            if (res.data.info === 0) {
+              this.error = true;
+              this.errorlabel = "输入的原密码错误";
+            } else {
+              alert(res.data.info);
+            }
+          });
       }
     }
   }

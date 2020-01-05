@@ -4,19 +4,16 @@
       <div class="user">
         <div class="userbox">
           <div class="avatar">
-            <router-link :to="{name:'Column',params:{uid:uid}}">
-              <img
-                :src="`https://api.adorable.io/avatars/200/${user.username}.png`"
-                class="avatar-112 avatar img-thumbnail"
-              />
+            <router-link :to="{name:'Column',params:{uid:user.uid}}">
+              <img :src="user.avatar" class="avatar-112 avatar img-thumbnail" />
             </router-link>
           </div>
           <div class="username">
-            <router-link :to="{name:'Column',params:{uid:uid}}">{{ user.username }} 的专栏</router-link>
+            <router-link :to="{name:'Column',params:{uid:user.uid}}">{{ user.username }} 的专栏</router-link>
           </div>
           <hr />
           <div class="userbutton">
-            <router-link :to="{name:'Column',params:{uid:uid}}">专栏文章（{{ articleNum }}）</router-link>
+            <router-link :to="{name:'Column',params:{uid:user.uid}}">专栏文章</router-link>
           </div>
         </div>
       </div>
@@ -26,45 +23,33 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-// import ls from "@/utils/localStorage";
 export default {
   name: "Column",
   data() {
     return {
-      //   user: ls.getItem("user") ? ls.getItem("user") : {}
+      user: {
+        username: "",
+        avatar: ""
+      }
     };
   },
   props: ["uid"],
-  computed: {
-    // 将指定的状态混入计算属性
-    ...mapState(["user", "articles"]),
-    // 基于 user 返回用户名
-    userName() {
-      return this.user && this.user.name;
-    },
-    // 基于 user 返回用户头像
-    userAvatar() {
-      return this.user && this.user.avatar;
-    },
-    // 基于 articles 返回文章数量
-    articleNum() {
-      return this.articles ? this.articles.length : 0;
-    }
-  },
-  activated() {
-    console.log("column.activated");
+  computed: {},
+  created() {
     this.initData();
   },
   methods: {
     initData() {
-      //提交用户ID（路由获得）,获取该用户的所有信息
-      //     this.$axios.post();
-      //res返回用户该用户的所有
-      //
-      //   if (this.$router.params.uid) {
-      //     this.$axios.post();
-      //   }
+      console.log(this.uid);
+      this.$axios
+        .post("http://192.168.0.106:3001/user/userInfo", { uid: this.uid })
+        .then(res => {
+          this.user = {
+            username: res.data.info.username,
+            avatar: res.data.info.avatar
+          };
+          console.log(res);
+        });
     }
   }
 };
