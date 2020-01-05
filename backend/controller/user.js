@@ -78,6 +78,24 @@ class User {
             return res.json(resp(code.REQUEST_FAIL, '用户更新失败'))
         }
     }
+    static async modifyPassword(req, res) {
+        try {
+            let {old_password, new_password} = req.body
+            const _id = req.session.user._id
+            const user = await mongo.db.collection('user').findOne({_id: ObjectID(_id)})
+            // 判断旧密码是否正确
+            old_password = crypto.createHash('sha1').update(old_password).digest('hex')
+            if(old_password !== user.password) return res.json(resp(code.REQUEST_FAIL, '密码修改失败：旧密码错误'))
+            new_password = crypto.createHash('sha1').update(new_password).digest('hex')
+            await mongo.db.collection('user').updateOne({_id: ObjectID(_id)}, {$set: {
+                password: new_password
+            }})
+            return res.json(resp(code.REQUEST_SUCCESS, '密码修改成功'))
+        } catch (error) {
+            console.error(error)
+            return res.json(resp(code.REQUEST_FAIL, '用户更新失败'))
+        }
+    }
 }
 
 module.exports = User

@@ -10,5 +10,5 @@ router.post('/isLogin', UserMiddleware.isLogin, UserController.isLogin)
 router.post('/logout', UserMiddleware.logout, UserController.logout)
 router.post('/userInfo', UserMiddleware.userInfo, UserController.userInfo)
 router.post('/userUpdate', UserMiddleware.userUpdate, UserController.userUpdate)
-
+router.post('/modifyPassword', UserMiddleware.modifyPassword, UserController.modifyPassword)
 module.exports = router

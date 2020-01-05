@@ -17,5 +17,8 @@ class UserMiddleware{
     static userUpdate(req, res, next) {
         next()
     }
+    static modifyPassword(req, res, next) {
+        next()
+    }
 }
 module.exports = UserMiddleware
