@@ -2,7 +2,7 @@
   <div class="header">
     <div class="primary_width layouts_box">
       <div class="logo">
-        <router-link :to="{name:'home'}">
+        <router-link :to="{name:'Home'}">
           <font-awesome-icon :icon="myIcon" class="fa_icon_mid" />
         </router-link>
       </div>
@@ -13,10 +13,7 @@
           </router-link>
           <a-dropdown>
             <a class="ant-dropdown-link">
-              <img
-                :src="`https://api.adorable.io/avatars/200/${user.username}.png`"
-                class="nav_avatar"
-              />
+              <img :src="user.avatar" class="nav_avatar" />
               <span class="nav_name">{{ user.username }}</span>
               <a-icon type="down" />
             </a>
@@ -50,7 +47,6 @@
   </div>
 </template>
 <script>
-import { Button, Icon, Dropdown, Menu } from "ant-design-vue";
 import ls from "@/utils/localStorage";
 import { faVuejs } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
@@ -58,40 +54,59 @@ export default {
   name: "TheHeader",
   data() {
     return {
-      auth: ls.getItem("auth"),
-      user: ls.getItem("user") ? ls.getItem("user") : {},
+      auth: ls.getItem("auth") || this.$store.state.auth || false,
+      user: ls.getItem("user") || this.$store.state.user || {},
       myIcon: faVuejs
     };
   },
   components: {
-    [Button.name]: Button,
-    [Menu.name]: Menu,
-    [Menu.Item.name]: Menu.Item,
-    [Icon.name]: Icon,
-    [Dropdown.name]: Dropdown,
     FontAwesomeIcon
   },
 
   methods: {
+    logoutNotification(message) {
+      this.$notification.open({
+        message: message,
+        description:
+          "已为您退出登录状态，您仍可浏览本站的部分内容，若需要更好的使用本职，请保持登录状态！",
+        onClick: () => {}
+      });
+    },
     column() {
-      this.$router.push({ name: "Column", params: { uid: this.user._id } });
+      this.$router.push({
+        name: "Column",
+        params: { uid: this.$store.state.user._id }
+      });
     },
     edit() {
-      this.$router.push({ name: "EditUsers", params: { uid: this.user._id } });
+      this.$router.push({
+        name: "EditUsers",
+        params: { uid: this.$store.state.user._id }
+      });
     },
     logout() {
       ls.removeItem("auth");
       ls.removeItem("user");
-      this.$store.state.auth = "";
-      this.$store.state.user = "";
       this.$axios.post("http://192.168.0.106:3001/user/logout").then(res => {
-        console.log(res);
+        this.logoutNotification(res.data.info);
+        if (this.$route.name == "Home") {
+          this.auth = false;
+          this.user = {};
+        } else {
+          this.auth = false;
+          this.user = {};
+          this.$router.push({ name: "Home" });
+        }
       });
-      // axios.post('http://192.168.0.106:3001/user/login', params)
-      this.$router.push({ name: "Home" });
     }
   },
   watch: {
+    auth() {
+      this.$store.state.auth = this.auth;
+    },
+    user() {
+      this.$store.state.user = this.user;
+    },
     "$store.state.auth": function() {
       this.auth = this.$store.state.auth;
     },

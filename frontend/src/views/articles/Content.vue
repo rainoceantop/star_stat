@@ -12,8 +12,14 @@
         <div class="markdown-body" v-html="article.content"></div>
       </div>
       <div class="ed" v-if="auth">
-        <a-button @click="deleteArticle">删除</a-button>
-        <a-button @click="editArticle">修改</a-button>
+        <a-button @click="editArticle" type="primary">
+          <a-icon type="edit" />修改
+        </a-button>
+        <a-popconfirm title="确定要删除该文章吗" @confirm="deleteArticle" okText="删除" cancelText="取消">
+          <a-button type="danger">
+            <a-icon type="delete" />删除
+          </a-button>
+        </a-popconfirm>
       </div>
     </div>
     <!-- <div class="evaluate_box">
@@ -38,14 +44,13 @@
 </template>
 
 <script>
-import { Button, Icon, Input } from "ant-design-vue";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faClock, faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 export default {
   name: "Content",
   data() {
     return {
-      auth: true,
+      auth: false,
       clockIcon: faClock,
       deleteIcon: faTrash,
       editIcon: faEdit,
@@ -60,11 +65,9 @@ export default {
   },
   created() {
     this.initData();
+    this.isauth();
   },
   components: {
-    [Button.name]: Button,
-    [Icon.name]: Icon,
-    [Input.name]: Input,
     FontAwesomeIcon
   },
   props: ["uid", "articleId"],
@@ -94,22 +97,29 @@ export default {
         })
         .catch(err => console.error(err));
     },
+    isauth() {
+      if (this.$store.state.user != null) {
+        if (this.uid == this.$store.state.user._id) {
+          this.auth = true;
+        } else {
+          this.auth = false;
+        }
+      } else {
+        this.auth = false;
+      }
+    },
     initData() {
-      console.log("initData");
-      this.$axios
-        .get("http://192.168.0.106:3001/article/getArticle/" + this.articleId)
-        .then(res => {
-          const article = {
-            _id: res.data.info._id,
-            title: res.data.info.title,
-            content: res.data.info.content,
-            date: res.data.info.date,
-            like_users: res.data.info.like_users
-          };
-          this.article = article;
-          console.log(article);
-          this.$store.commit("getArticle", article);
-        });
+      this.$store.dispatch("getArticle", this.articleId).then(res => {
+        const article = {
+          _id: res.data.info._id,
+          title: res.data.info.title,
+          content: res.data.info.content,
+          date: res.data.info.date,
+          like_users: res.data.info.like_users
+        };
+        this.$store.commit("CreateArticle", article);
+        this.article = article;
+      });
     }
   }
 };
@@ -132,11 +142,16 @@ export default {
       align-items: center;
       justify-content: center;
       text-align: center;
+      margin-bottom: 16px;
     }
-    // .message {
-    // }
+    .message {
+      .markdown-body {
+        text-align: left;
+      }
+    }
     .ed {
       margin-top: 20px;
+      text-align: right;
     }
   }
   .evaluate_box {

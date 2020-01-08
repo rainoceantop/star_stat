@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { Input, Button } from "ant-design-vue";
 export default {
   name: "Create",
   data() {
@@ -38,24 +37,40 @@ export default {
       }
     };
   },
-  components: {
-    [Input.name]: Input,
-    [Button.name]: Button
-  },
+
   props: ["uid", "articleId"],
+
   created() {
     this.initData();
+    console.log(" created");
   },
   mounted() {
-    console.log("create mounted");
+    console.log(" mounted");
   },
   methods: {
+    editArticleNotification(message) {
+      this.$notification.open({
+        message: message,
+        // description: "很高兴您能成为我们的一员",
+        onClick: () => {
+          console.log("Notification Clicked!");
+        }
+      });
+    },
+    iscreate() {
+      return this.articleId == undefined;
+    },
     initData() {
-      console.log(this.uid, this.articleId);
-      if (this.articleId == undefined) {
-        console.log("create");
+      if (this.iscreate()) {
+        this.article.author = "";
+        this.article.title = "";
+        this.article.content = "";
       } else {
-        console.log("edit");
+        this.$axios
+          .get("http://192.168.0.106:3001/article/getArticle/" + this.articleId)
+          .then(res => {
+            this.article = res.data.info;
+          });
       }
     },
     // 发布
@@ -68,27 +83,39 @@ export default {
       };
       // 如果标题和内容都不为空，提交发布
       if (article.title !== "" && article.content.trim() !== "") {
-        this.$store.dispatch("post", article).then(res => {
-          console.log(res);
-          this.$router.push({
-            name: "Content",
-            params: {
-              uid: this.$store.state._id,
-              articleId: res.data.info[0]._id
-            }
+        if (this.iscreate()) {
+          this.$store.dispatch("createArticle", article).then(res => {
+            console.log(res);
+            this.$router.push({
+              name: "Content",
+              params: {
+                uid: res.data.info[0].author,
+                articleId: res.data.info[0]._id
+              }
+            });
           });
-        });
+        } else {
+          console.log(article);
+          this.$store.dispatch("updateArticle", article).then(res => {
+            this.editArticleNotification(res.data.info);
+            console.log(res);
+            this.$router.push({
+              name: "Content",
+              params: {
+                uid: this.article.author,
+                articleId: this.articleId
+              }
+            });
+          });
+        }
+
         // 在控制台输出当前文章
       }
     }
   },
   watch: {
     $route: function() {
-      if (this.$route.name == "Edit") {
-        console.log("edit");
-      } else if (this.$route.name == "Create") {
-        console.log("Create");
-      }
+      this.initData();
     }
   }
 };

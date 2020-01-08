@@ -35,7 +35,6 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
-import { Button, Input, Upload, Icon, Modal } from "ant-design-vue";
 export default {
   name: "EditAcatar",
   data() {
@@ -48,11 +47,6 @@ export default {
   },
   created() {},
   components: {
-    [Button.name]: Button,
-    [Input.name]: Input,
-    [Upload.name]: Upload,
-    [Icon.name]: Icon,
-    [Modal.name]: Modal,
     FontAwesomeIcon
   },
   methods: {

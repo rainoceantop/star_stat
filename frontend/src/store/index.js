@@ -9,7 +9,7 @@ export default new Vuex.Store({
   state: {
     auth: ls.getItem('auth'),
     user: ls.getItem('user'),
-    article: ls.getItem('article')
+    article: ls.getItem('article'),
     // article: {}
   },
   mutations: {
@@ -22,6 +22,7 @@ export default new Vuex.Store({
       state.user = user
       ls.setItem('user', user)
     },
+
     updateUser(state, user) {
       state.user._id = user._id
       state.user.avatar = user.avatar
@@ -33,15 +34,13 @@ export default new Vuex.Store({
       ls.setItem('user', user)
     },
 
-    getArticle(state, article) {
+    CreateArticle(state, article) {
       state.article = article
+      ls.setItem('user', article)
     },
     // createArticle(state, article) {
     //   state.article = article
     //   state.articles.unshift(article)
-    // },
-    // getArticle(state, article) {
-    //   state.article = article
     // },
     // getSelfArticles(state, articles) {
     //   state.articles = articles
@@ -54,18 +53,18 @@ export default new Vuex.Store({
         }
       }
     },
-    updateArticle(state, article) {
-      state.article = article;
-    },
-    updateArticles(state, article) {
-      state.articles.map(item => {
-        if (article._id == item._id) {
-          item['title'] = article.title;
-          item['content'] = article.content;
-        }
-        return item
-      })
-    }
+    // updateArticle(state, article) {
+    //   state.article = article;
+    // },
+    // updateArticles(state, article) {
+    //   state.articles.map(item => {
+    //     if (article._id == item._id) {
+    //       item['title'] = article.title;
+    //       item['content'] = article.content;
+    //     }
+    //     return item
+    //   })
+    // }
 
   },
   actions: {
@@ -78,27 +77,17 @@ export default new Vuex.Store({
       return axios.post('http://192.168.0.106:3001/user/register', params)
     },
 
+
     //user
     updateUser(context, params) {
       console.log("params", params)
       return axios.post('http://192.168.0.106:3001/user/userUpdate', params)
     },
+
     //article
-    post(context, params) {
-      const articleId = params.articleId;
-      if (articleId != undefined) {
-        //有文章id,则为修改
-        return axios.post('http://192.168.0.106:3001/article/update', params)
-      } else {
-        //无文章id,则为创建
-        return axios.post('http://192.168.0.106:3001/article/create', params)
-      }
-
-    },
     createArticle(context, params) {
-      return axios.post('http://192.168.0.106:3001/article/create', params)
+      return axios.post('http://192.168.0.106:3001/article/create', params);
     },
-
     getArticle(context, params) {
       return axios.get('http://192.168.0.106:3001/article/getArticle/' + params)
     },
@@ -121,12 +110,6 @@ export default new Vuex.Store({
         }
       })
     },
-    // updateArticle(context, params) {
-    //   return axios.post('http://192.168.0.106:3001/article/update', params)
-    // }
-    // showAreticle(context,params){
-
-    // }
   },
   modules: {
   }

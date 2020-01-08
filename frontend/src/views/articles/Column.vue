@@ -4,16 +4,20 @@
       <div class="user">
         <div class="userbox">
           <div class="avatar">
-            <router-link :to="{name:'Column',params:{uid:user.uid}}">
+            <router-link :to="{name:'Column',params:{uid:this.$route.params.uid}}">
               <img :src="user.avatar" class="avatar-112 avatar img-thumbnail" />
             </router-link>
           </div>
           <div class="username">
-            <router-link :to="{name:'Column',params:{uid:user.uid}}">{{ user.username }} 的专栏</router-link>
+            <router-link
+              :to="{name:'Column',params:{uid:this.$route.params.uid}}"
+            >{{ user.username }} 的专栏</router-link>
           </div>
           <hr />
           <div class="userbutton">
-            <router-link :to="{name:'Column',params:{uid:user.uid}}">专栏文章</router-link>
+            <router-link
+              :to="{name:'Column',params:{uid:this.$route.params.uid}}"
+            >{{user.introduction}}</router-link>
           </div>
         </div>
       </div>
@@ -29,26 +33,29 @@ export default {
     return {
       user: {
         username: "",
-        avatar: ""
+        avatar: "",
+        introduction: ""
       }
     };
   },
   props: ["uid"],
   computed: {},
-  created() {
+  created() {},
+  mounted() {
     this.initData();
   },
   methods: {
     initData() {
-      console.log(this.uid);
       this.$axios
-        .post("http://192.168.0.106:3001/user/userInfo", { uid: this.uid })
+        .post("http://192.168.0.106:3001/user/userInfo", {
+          uid: this.$route.params.uid
+        })
         .then(res => {
           this.user = {
             username: res.data.info.username,
-            avatar: res.data.info.avatar
+            avatar: res.data.info.avatar,
+            introduction: res.data.info.introduction
           };
-          console.log(res);
         });
     }
   }

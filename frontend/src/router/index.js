@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import store from '../store/index'
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -8,18 +8,33 @@ const routes = [
 
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: () => import('../views/Home.vue')
   },
   //登录与注册
   {
     path: '/login',
     name: 'Login',
+    beforeEnter: (to, from, next) => {
+      if (store.state.auth == false || store.state.auth == null) {
+        next();
+      } else {
+        next("/");
+      }
+    },
     component: () => import('../views/auth/Login.vue')
   },
   {
+
     path: '/register',
     name: 'Register',
+    beforeEnter: (to, from, next) => {
+      if (store.state.auth == false || store.state.auth == null) {
+        next();
+      } else {
+        next("/");
+      }
+    },
     component: () => import('../views/auth/Register.vue')
   },
   //用户信息修改
@@ -60,24 +75,24 @@ const routes = [
 
   // Column
   {
-    path: '/:uid',
+    path: '/',
     name: 'Column',
-    props: true,
-    redirect: '/:uid',
-    default: 'List',
+    redirect: "/:uid",
     component: () => import('@/views/articles/Column.vue'),
     children: [
       {
         path: '/:uid',
         name: 'List',
         props: true,
-        component: () => import('@/views/articles/List.vue')
+        component: () => import('@/views/articles/List.vue'),
+        meta: { auth: true }
       },
       {
         path: '/:uid/articles/:articleId/content',
         name: 'Content',
         props: true,
-        component: () => import('@/views/articles/Content.vue')
+        component: () => import('@/views/articles/Content.vue'),
+        meta: { auth: true }
       }
     ]
   },

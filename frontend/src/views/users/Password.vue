@@ -32,7 +32,6 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faUserLock } from "@fortawesome/free-solid-svg-icons";
-import { Input, Button } from "ant-design-vue";
 export default {
   name: "EditPassword",
   data() {
@@ -47,11 +46,17 @@ export default {
     };
   },
   components: {
-    [Input.name]: Input,
-    [Button.name]: Button,
     FontAwesomeIcon
   },
   methods: {
+    updatePasswordNotification(message) {
+      this.$notification.open({
+        message: message,
+        onClick: () => {
+          console.log("Notification Clicked!");
+        }
+      });
+    },
     updatePassword() {
       if (!this.p_reg.test(this.new_password)) {
         this.error = true;
@@ -69,9 +74,12 @@ export default {
           .then(res => {
             if (res.data.info === 0) {
               this.error = true;
-              this.errorlabel = "输入的原密码错误";
+              this.errorlabel = res.data.info;
             } else {
-              alert(res.data.info);
+              this.old_password = "";
+              this.new_password = "";
+              this.new_confirm = "";
+              this.updatePasswordNotification(res.data.info);
             }
           });
       }

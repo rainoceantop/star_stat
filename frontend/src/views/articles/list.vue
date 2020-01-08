@@ -3,7 +3,7 @@
     <div class="articleslistbox">
       <div class="title">
         <h3>文章专栏</h3>
-        <a-button type="primary" @click="create">
+        <a-button type="primary" @click="create" v-if="auth">
           <a-icon type="highlight" />创作文章
         </a-button>
       </div>
@@ -25,35 +25,43 @@
 </template>
 
 <script>
-import { Button, Icon } from "ant-design-vue";
 export default {
   name: "List",
   data() {
     return {
+      auth: false,
       articles: []
     };
   },
   props: ["uid"],
-  components: {
-    [Button.name]: Button,
-    [Icon.name]: Icon
-  },
-  created() {
+  created() {},
+  mounted() {
     this.initData();
+    this.isauth();
   },
   methods: {
+    isauth() {
+      if (this.$store.state.user != null) {
+        if (this.uid == this.$store.state.user._id) {
+          this.auth = true;
+        } else {
+          this.auth = false;
+        }
+      } else {
+        this.auth = false;
+      }
+    },
     create() {
       this.$router.push({ name: "Create" });
     },
     initData() {
       this.$axios
-        .post(
-          "http://192.168.0.106:3001/article/getArticles/" +
-            this.$route.params.uid
-        )
+        .post("http://192.168.0.106:3001/article/getArticles/" + this.uid)
         .then(res => {
           if (res.data.code === 1) {
             this.articles = res.data.info;
+          } else {
+            alert(res.data.info);
           }
         });
     }

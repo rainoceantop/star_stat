@@ -26,7 +26,6 @@
   </div>
 </template>
 <script>
-import { Button } from "ant-design-vue";
 import ls from "@/utils/localStorage";
 export default {
   name: "register",
@@ -42,9 +41,6 @@ export default {
       errorlabel: ""
     };
   },
-  components: {
-    [Button.name]: Button
-  },
   computed: {
     emailitem: function() {
       return this.user.email.length === 0 ? "" : "keyup";
@@ -55,6 +51,15 @@ export default {
   },
 
   methods: {
+    loginNotification() {
+      this.$notification.open({
+        message: "用户登录成功",
+        description: "欢迎来到本站！",
+        onClick: () => {
+          console.log("Notification Clicked!");
+        }
+      });
+    },
     login: function() {
       if (!this.e_reg.test(this.user.email)) {
         this.error = true;
@@ -75,6 +80,7 @@ export default {
             if (res.data.code === 1) {
               this.$store.commit("login", res.data.info);
               this.$store.commit("UPDATE_AUTH", true);
+              this.loginNotification();
               this.$router.push("/");
             } else {
               this.error = true;

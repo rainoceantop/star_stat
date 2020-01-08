@@ -47,7 +47,6 @@
 <script>
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faUserCog } from "@fortawesome/free-solid-svg-icons";
-import { Input, Radio, Button } from "ant-design-vue";
 export default {
   name: "EditProfile",
   data() {
@@ -55,37 +54,24 @@ export default {
       hobby: "",
       titleIcon: faUserCog,
       user: {
-        username: "",
-        sex: "",
-        hobbies: [],
-        introduction: ""
+        username: this.$store.state.user.username || "",
+        sex: this.$store.state.user.sex || "",
+        hobbies: this.$store.state.user.hobbies || [],
+        introduction: this.$store.state.user.introduction || ""
       }
     };
   },
   components: {
-    FontAwesomeIcon,
-    [Radio.name]: Radio,
-    [Button.name]: Button,
-    [Radio.Group.name]: Radio.Group,
-    [Input.name]: Input
-  },
-  created() {
-    this.initData();
-    console.log("profile");
+    FontAwesomeIcon
   },
   methods: {
-    initData() {
-      const uid = { uid: this.$route.params.uid };
-      this.$axios
-        .post("http://192.168.0.106:3001/user/userInfo", uid)
-        .then(res => {
-          this.user = {
-            username: res.data.info.username,
-            sex: res.data.info.sex || 0,
-            hobbies: res.data.info.hobbies || [],
-            introduction: res.data.info.introduction || ""
-          };
-        });
+    updateProfileNotification(message) {
+      this.$notification.open({
+        message: message,
+        onClick: () => {
+          console.log("Notification Clicked!");
+        }
+      });
     },
     updateProfile() {
       this.$store.dispatch("updateUser", this.user).then(res => {
@@ -98,7 +84,7 @@ export default {
           hobbies: this.user.hobbies,
           introduction: this.user.introduction
         });
-        alert(res.data.info);
+        this.updateProfileNotification(res.data.info);
       });
     },
     addInterest(hobby) {
